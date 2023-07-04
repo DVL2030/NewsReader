@@ -1,13 +1,91 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+:root {
+  --main-theme-blue: #1a73e8;
+}
+
+html {
+  /* font-size: 62.5%; */
+}
+
+/* ===================================================================================
+   Header, Main, Footer
+   ==================================================================================== */
+
+span.logo-line-1 {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+span.logo-line-2 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--main-theme-blue);
+}
+
+#home-search-control {
+  min-width: 30rem;
+}
+
+/* ==========================================================================
+   HTML Elements
+   ========================================================================== */
+
+/* ==========================================
+   Input, Select, Table, Button
+   ==========================================*/
+input,
+select,
+textarea,
+button {
+  padding: 1rem;
+  border: 0.1rem #a4a4a4 solid;
+  border-radius: 0.3rem;
+  font-size: 1.6rem;
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+button:hover,
+select:hover {
+  -webkit-filter: brightness(90%);
+  -moz-filter: brightness(90%);
+  -o-filter: brightness(90%);
+  -ms-filter: brightness(90%);
+  filter: brightness(90%);
+  cursor: pointer;
+}
+
+button.home-sign-in {
+  width: 7rem;
+  background-color: var(--main-theme-blue);
+  color: floralwhite;
+  font-weight: bold;
+}
+
+/* =====================================================================================
+   Responsive Layout
+   ===================================================================================== */
+
+.flex-fill {
+  flex: 1 1 auto;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }
