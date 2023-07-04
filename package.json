@@ -1,0 +1,31 @@
+{
+  "name": "newsreader",
+  "version": "1.0.0",
+  "description": "This is a News Aggregator webapp inspired by news app feedly. You can aggregate major news sources and read up-to-date news coverage from all over the world. As a user, you can save as many feeds as you want, many collections of different interests, and set preferences that cater to your reading needs.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch backend --exec node --experimental-modules backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DVL2030/NewsReader.git"
+  },
+  "keywords": [],
+  "author": "dvl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DVL2030/NewsReader/issues"
+  },
+  "homepage": "https://github.com/DVL2030/NewsReader#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.0",
+    "node-fetch": "^3.3.1",
+    "pg": "^8.11.1"
+  }
+}
