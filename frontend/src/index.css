@@ -9,6 +9,9 @@ html {
 /* ===================================================================================
    Header, Main, Footer
    ==================================================================================== */
+#search-nav {
+  border-bottom: 0.1rem solid lightgray;
+}
 
 span.logo-line-1 {
   font-weight: 500;
@@ -22,13 +25,46 @@ span.logo-line-2 {
 }
 
 #home-search-control {
+  background-color: #f8f4f4;
   min-width: 30rem;
+  padding-left: 2.5rem;
+}
+/* 
+#home-search-control:hover,
+button.search:hover {
+  background-color: white;
+} */
+
+button.search {
+  float: left;
+  position: absolute;
+  top: 0.4rem;
+  border: none;
+  background-color: transparent;
+  width: 1rem;
+  height: 1rem;
+  color: rgb(78, 78, 78);
+}
+
+.menu-bar {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.menu-bar > * {
+  margin: 0 0.3rem;
 }
 
 /* ==========================================================================
    HTML Elements
    ========================================================================== */
-
+hr.vr {
+  margin-top: 0.2rem;
+  margin-right: 0.2rem;
+  width: 1px;
+  height: 2rem;
+  display: inline-block;
+}
 /* ==========================================
    Input, Select, Table, Button
    ==========================================*/
@@ -65,6 +101,9 @@ button.home-sign-in {
 /* =====================================================================================
    Responsive Layout
    ===================================================================================== */
+div.container {
+  padding: 1rem 0;
+}
 
 .flex-fill {
   flex: 1 1 auto;
