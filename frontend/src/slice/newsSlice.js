@@ -5,8 +5,6 @@ const newsHome = localStorage.getItem("newsHome")
   ? JSON.parse(localStorage.getItem("newsHome"))
   : null;
 
-console.log(newsHome);
-
 const initialState = {
   newsHome,
   loading: false,

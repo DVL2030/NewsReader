@@ -12,6 +12,7 @@ import {
   Button,
 } from "react-bootstrap";
 import HomePage from "./page/HomePage";
+import { TOPICS } from "./const/const";
 
 function App() {
   const date = new Date();
@@ -58,37 +59,25 @@ function App() {
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/feed">Feeds</Nav.Link>
                 <Nav.Link href="/bookmark">Bookmark</Nav.Link>
-                <hr className="vr"></hr>
-                <Nav.Link href="/topics/world">World</Nav.Link>
-                <Nav.Link href="/topics/us">U.S</Nav.Link>
-                <Nav.Link href="/topics/korea">Korea</Nav.Link>
-                <Nav.Link href="/topics/business" className="d-none d-xs-block">
-                  Business
-                </Nav.Link>
-                <Nav.Link href="/topics/economy" className="d-none d-sm-block">
-                  Economy
-                </Nav.Link>
-                <Nav.Link
-                  href="/topics/technology"
-                  className="d-none d-sm-block"
-                >
-                  Technology
-                </Nav.Link>
-                <Nav.Link
-                  href="/topics/entertainment"
-                  className="d-none d-md-block"
-                >
-                  Entertainment
-                </Nav.Link>
-                <Nav.Link href="/topics/sports" className="d-none d-md-block">
-                  Sports
-                </Nav.Link>
-                <Nav.Link href="/topics/science" className="d-none d-lg-block">
-                  Science
-                </Nav.Link>
-                <Nav.Link href="/topics/health" className="d-none d-lg-block">
-                  Health
-                </Nav.Link>
+                <hr className="vr d-none d-sm-block"></hr>
+
+                {TOPICS.map((top, idx) => (
+                  <Nav.Link
+                    key={idx}
+                    href={top}
+                    className={`d-none ${
+                      idx > 7
+                        ? "d-lg-block"
+                        : idx > 5
+                        ? "d-md-block"
+                        : idx > 3
+                        ? "d-sm-block"
+                        : "d-sm-block"
+                    }`}
+                  >
+                    {`${top[0].toUpperCase()}${top.substring(1)}`}
+                  </Nav.Link>
+                ))}
               </Nav>
             </Container>
           </Navbar>

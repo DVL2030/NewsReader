@@ -22,7 +22,11 @@ export default function Card(props) {
       </div>
       <div className="crd-title">
         <Link to="/article/" className="text-secondary">
-          <h5>{size == "lg" ? `${title.substring(0, 100)}...` : title}</h5>
+          <h5>
+            {size == "lg" || size == "md"
+              ? `${title.substring(0, 100)}...`
+              : title}
+          </h5>
         </Link>
       </div>
 
