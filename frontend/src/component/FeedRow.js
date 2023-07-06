@@ -7,34 +7,18 @@ export default function FeedRow(props) {
   const { data } = props;
   return (
     <Container>
-      <hr></hr>
       <Row>
         {data.length > 1 ? (
           <>
             <Col xs={12} md={5}>
               <div className="main-news-card-lg">
-                <Card
-                  image={data[0].urlToImage}
-                  icon={getIcon(data[0].url)}
-                  pubDate={data[0].publishedAt}
-                  title={data[0].title}
-                  source={data[0].source.name}
-                  size={"lg"}
-                ></Card>
+                <Card cardData={data[0]} size="lg"></Card>
               </div>
             </Col>
             <Col xs md={7}>
               <div className="main-news-card-sm">
                 {data.slice(1, data.length).map((feed, idx) => (
-                  <Card
-                    idx={idx}
-                    image={feed.urlToImage}
-                    icon={getIcon(feed.url)}
-                    pubDate={feed.publishedAt}
-                    title={feed.title}
-                    source={feed.source.name}
-                    size={"md"}
-                  ></Card>
+                  <Card key={idx} cardData={feed} size="md"></Card>
                 ))}
               </div>
             </Col>
@@ -46,15 +30,7 @@ export default function FeedRow(props) {
                 <Container key={idx}>
                   <Row>
                     <Col xs={9}>
-                      <Card
-                        idx={idx}
-                        image={feed.urlToImage}
-                        icon={getIcon(feed.url)}
-                        pubDate={feed.publishedAt}
-                        title={feed.title}
-                        source={feed.source.name}
-                        size={"md"}
-                      ></Card>
+                      <Card key={idx} cardData={feed} size="md"></Card>
                     </Col>
                     <Col xs={3}>
                       <div className="img-sm">
@@ -68,6 +44,7 @@ export default function FeedRow(props) {
           </Col>
         )}
       </Row>
+      <hr></hr>
     </Container>
   );
 }

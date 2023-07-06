@@ -31,11 +31,16 @@ newsRouter.get(
 newsRouter.post(
   "/topic",
   expressAsyncHandler(async (req, res) => {
+    const { topic } = req.body;
+
     try {
-      const url = `${host}top-headlines?country=us&apiKey=${apikey}&`;
+      const url = `${host}top-headlines?country=us&category=${
+        topic === "world" ? "general" : topic
+      }&apiKey=${apikey}&pageSize=60`;
+      console.log(url);
       const response = await fetch(url);
       const data = await response.json();
-      return res.status(201).send(data);
+      return res.status(201).send(data.articles);
     } catch (error) {
       return res.status(401).send({
         message: error.message,
@@ -47,6 +52,7 @@ newsRouter.post(
 newsRouter.post(
   "/source",
   expressAsyncHandler(async (req, res) => {
+    const { topic } = req.source;
     try {
       const url = `${host}top-headlines?country=us&apiKey=${apikey}`;
       const response = await fetch(url);

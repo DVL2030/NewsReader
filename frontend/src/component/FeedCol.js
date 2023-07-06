@@ -11,29 +11,19 @@ export default function FeedCol(props) {
         <Col>
           <div className="main-news-card-sm">
             {data.map((feed, idx) => (
-              <>
-                <Container key={idx}>
-                  <Row>
-                    <Col xs={9}>
-                      <Card
-                        idx={idx}
-                        image={feed.urlToImage}
-                        icon={getIcon(feed.url)}
-                        pubDate={feed.publishedAt}
-                        title={feed.title}
-                        source={feed.source.name}
-                        size={"md"}
-                      ></Card>
-                    </Col>
-                    <Col xs={3}>
-                      <div className="img-sm">
-                        <img className="round" src={feed.urlToImage}></img>
-                      </div>
-                    </Col>
-                  </Row>
-                </Container>
+              <Container key={idx}>
+                <Row>
+                  <Col xs={8}>
+                    <Card cardData={feed} size="md"></Card>
+                  </Col>
+                  <Col xs={4}>
+                    <div className="img-sm">
+                      <img className="round" src={feed.urlToImage}></img>
+                    </div>
+                  </Col>
+                </Row>
                 <hr></hr>
-              </>
+              </Container>
             ))}
           </div>
         </Col>

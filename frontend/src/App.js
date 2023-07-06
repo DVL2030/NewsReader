@@ -13,6 +13,7 @@ import {
 } from "react-bootstrap";
 import HomePage from "./page/HomePage";
 import { TOPICS } from "./const/const";
+import TopicPage from "./page/TopicPage";
 
 function App() {
   const date = new Date();
@@ -64,13 +65,13 @@ function App() {
                 {TOPICS.map((top, idx) => (
                   <Nav.Link
                     key={idx}
-                    href={top}
+                    href={`/topics/${top}`}
                     className={`d-none ${
-                      idx > 7
+                      idx > 5
                         ? "d-lg-block"
-                        : idx > 5
-                        ? "d-md-block"
                         : idx > 3
+                        ? "d-md-block"
+                        : idx > 1
                         ? "d-sm-block"
                         : "d-sm-block"
                     }`}
@@ -83,7 +84,11 @@ function App() {
           </Navbar>
         </header>
         <main id="main-div">
-          <HomePage />
+          <Routes>
+            <Route path="/" exact element={<HomePage />} />
+            <Route path="/home" exact element={<HomePage />} />
+            <Route path="/topics/:topic" element={<TopicPage />} />
+          </Routes>
         </main>
       </div>
     </BrowserRouter>
