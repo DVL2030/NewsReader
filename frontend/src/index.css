@@ -1,5 +1,6 @@
 :root {
   --main-theme-blue: #1a73e8;
+  --main-anchor-dark: rgb(88, 88, 88);
 }
 
 html {
@@ -9,11 +10,16 @@ html {
 /* ===================================================================================
    Header, Main, Footer
    ==================================================================================== */
+
+/* ==========================================
+   Header
+   ==========================================*/
 #search-nav {
   border-bottom: 0.1rem solid lightgray;
 }
 
 span.logo-line-1 {
+  color: black;
   font-weight: 500;
   font-size: 1.4rem;
 }
@@ -55,9 +61,85 @@ button.search {
   margin: 0 0.3rem;
 }
 
+/* ==========================================
+   Main
+   ==========================================*/
+
+#main-div {
+  padding-top: 10rem;
+}
+
 /* ==========================================================================
    HTML Elements
    ========================================================================== */
+/* ==========================================
+   Anchor
+   ==========================================*/
+a {
+  text-decoration: none;
+  color: #1d75e9;
+  margin: 0;
+  padding: 0;
+}
+
+a:link,
+a:visited {
+  text-decoration: none;
+  color: #1d75e9;
+}
+
+a.link-disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.menu-bar > a {
+  color: var(--main-anchor-dark);
+}
+
+.crd-source a {
+  color: var(--main-anchor-dark);
+  font-weight: 600;
+}
+
+.crd-title a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================
+   Img
+   ==========================================*/
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: auto;
+}
+
+img.round {
+  border-radius: 0.7rem;
+}
+
+div.img-icon {
+  display: inline-block;
+  max-width: 1rem;
+  max-height: 1rem;
+  margin-right: 0.5rem;
+}
+
+/* ==========================================
+   Font
+   ==========================================*/
+
+.topic-navigator {
+  font-size: 1.2rem;
+}
+
+/* ==========================================
+   Divider
+   ==========================================*/
+
 hr.vr {
   margin-top: 0.2rem;
   margin-right: 0.2rem;
@@ -96,6 +178,23 @@ button.home-sign-in {
   background-color: var(--main-theme-blue);
   color: floralwhite;
   font-weight: bold;
+}
+
+/* ==========================================
+   Card
+   ==========================================*/
+
+.crd {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  /* height: 30rem; */
+  /* max-height: 30rem; */
+  margin: 0.5rem 0;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 /* =====================================================================================

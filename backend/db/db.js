@@ -1,6 +1,7 @@
-import { Pool } from "pg";
-import config from "./db.config";
+import pkg from "pg";
+import config from "./db.config.js";
 
+const { Pool } = pkg;
 const pool = new Pool(config.db);
 
 export const query = async (query, params) => {

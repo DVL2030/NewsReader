@@ -1,9 +1,11 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../utils";
-import { isAuth } from "../middleware/auth";
-import { query } from "../db/db";
+import { generateToken } from "../utils.js";
+import { isAuth } from "../middleware/auth.js";
+import { query } from "../db/db.js";
+
+const userRouter = express.Router();
 
 userRouter.post(
   "/signin",
@@ -70,3 +72,4 @@ userRouter.post(
     }
   })
 );
+export default userRouter;
