@@ -31,3 +31,10 @@ export const getIcon = (url) => {
   const protocol = obj.protocol;
   return `${protocol}//${host}/favicon.ico`;
 };
+
+export const extractURLParam = (url, param) => {
+  const params = new URL(url).searchParams;
+  const value = params.get(param);
+  console.log(value);
+  return value;
+};

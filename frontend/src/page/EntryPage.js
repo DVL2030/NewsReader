@@ -17,7 +17,6 @@ export default function EntryPage() {
 
   useEffect(() => {
     const entry = newsHome[topic].find((x) => x.source.id == id);
-    console.log(entry);
     setData(entry);
   }, []);
 
