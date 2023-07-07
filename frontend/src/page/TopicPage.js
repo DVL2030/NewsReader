@@ -1,14 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import { Button } from "react-bootstrap";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
-import Card from "../component/Card";
 import FeedRow from "../component/FeedRow";
-import FeedCol from "../component/FeedCol";
 
 import { getTopic } from "../slice/newsSlice";
 
@@ -18,10 +15,14 @@ export default function TopicPage() {
   const { topic } = param;
 
   const newsState = useSelector((state) => state.news);
-  const { newsTopic, loading, error } = newsState;
+  const { newsHome, loading, error } = newsState;
+
+  const [data, setData] = useState();
 
   useEffect(() => {
-    if (!newsTopic) dispatch(getTopic(topic));
+    if (!newsHome || !newsHome[topic]) {
+      dispatch(getTopic(topic));
+    }
   }, []);
 
   return loading ? (
@@ -29,7 +30,7 @@ export default function TopicPage() {
   ) : (
     <div>
       {error && <MessageBox variants="danger">{error}</MessageBox>}
-      {newsTopic && (
+      {newsHome && newsHome[topic] && (
         <Container id="topic-container" className="py-5">
           <div className="main-message">
             <h4>{topic}</h4>
@@ -40,7 +41,8 @@ export default function TopicPage() {
                 {[...Array(Number(10)).keys()].map((x) => (
                   <FeedRow
                     key={x}
-                    data={newsTopic.slice(4 * (x - 1), 4 * x)}
+                    topic={topic}
+                    data={newsHome[topic].slice(4 * (x - 1), 4 * x)}
                   ></FeedRow>
                 ))}
               </div>

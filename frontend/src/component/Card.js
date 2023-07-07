@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { calcTimeDiff, getIcon } from "../utils";
 
 export default function Card(props) {
-  const { cardData, size } = props;
+  const { cardData, size, topic } = props;
 
   return (
     <div className="crd border-none">
       {size == "lg" && (
         <div className="crd-image">
-          <Link to="/article/">
+          <Link to={`/topics/${topic}/entry/${cardData.source.id}`}>
             <img
               className="round"
               src={cardData.urlToImage}
@@ -32,7 +32,10 @@ export default function Card(props) {
         </Link>
       </div>
       <div className="crd-title">
-        <Link to="/article/" className="text-secondary">
+        <Link
+          to={`/topics/${topic}/entry/${cardData.source.id}`}
+          className="text-secondary"
+        >
           <h5>
             {size == "lg" || size == "md"
               ? `${cardData.title.substring(0, 100)}...`

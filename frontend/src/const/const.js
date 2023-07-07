@@ -1,6 +1,6 @@
 export const TOPICS = [
   "world",
-  "economy",
+  "business",
   "technology",
   "entertainment",
   "sports",

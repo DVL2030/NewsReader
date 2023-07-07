@@ -7,7 +7,6 @@ const newsHome = localStorage.getItem("newsHome")
 
 const initialState = {
   newsHome,
-  newsTopic: null,
   loading: false,
   error: null,
 };
@@ -34,7 +33,13 @@ export const getTopic = createAsyncThunk(
   async (topic, { rejectWithValue }) => {
     try {
       const res = await axios.post("/api/news/topic", { topic: topic });
-      return res.data;
+      const resData = res.data;
+      // Push to LocalStorage to store all entries in one array.
+      const storageData = JSON.parse(localStorage.getItem("newsHome"));
+      const newStorage = { ...storageData, ...resData };
+
+      localStorage.setItem("newsHome", JSON.stringify(newStorage));
+      return newStorage;
     } catch (error) {
       return rejectWithValue(
         error.response && error.response.data.message
@@ -66,9 +71,9 @@ const newsSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getTopic.fulfilled, (state, action) => {
+      state.newsHome = action.payload;
       state.loading = false;
       state.error = null;
-      state.newsTopic = action.payload;
     });
     builder.addCase(getTopic.rejected, (state, action) => {
       state.loading = false;

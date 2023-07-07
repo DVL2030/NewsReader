@@ -5,12 +5,10 @@ import { Link } from "react-router-dom";
 import { getHomePage } from "../slice/newsSlice";
 
 import { getToday } from "../utils";
-import { TOPICS } from "../const/const";
 import { Button } from "react-bootstrap";
 
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
-import Card from "../component/Card";
 import FeedRow from "../component/FeedRow";
 import FeedCol from "../component/FeedCol";
 
@@ -23,7 +21,7 @@ export default function HomePage() {
   const { newsHome, loading, error } = newsState;
 
   useEffect(() => {
-    if (!newsHome) dispatch(getHomePage());
+    if (!newsHome || !newsHome.home) dispatch(getHomePage());
   }, []);
 
   return loading ? (
@@ -32,7 +30,7 @@ export default function HomePage() {
     <div>
       {error && <MessageBox variants="danger">{error}</MessageBox>}
 
-      {newsHome && (
+      {newsHome.home && (
         <Container id="main-container" className="py-5">
           <div className="main-message">
             <h4>Your briefing</h4>
@@ -46,10 +44,16 @@ export default function HomePage() {
                     Top stories <i className="fa fa-angle-right "></i>
                   </Link>
                 </div>
-                <FeedRow data={newsHome.slice(0, 4)}></FeedRow>
-                <FeedRow data={newsHome.slice(4, 8)}></FeedRow>
-                <FeedRow data={[newsHome[8]]}></FeedRow>
-                <FeedRow data={[newsHome[9]]}></FeedRow>
+                <FeedRow
+                  topic="home"
+                  data={newsHome.home.slice(0, 4)}
+                ></FeedRow>
+                <FeedRow
+                  topic="home"
+                  data={newsHome.home.slice(4, 8)}
+                ></FeedRow>
+                <FeedRow topic="home" data={[newsHome.home[8]]}></FeedRow>
+                <FeedRow topic="home" data={[newsHome.home[9]]}></FeedRow>
               </div>
             </Col>
             <Col lg={4} className="d-none d-md-block">
@@ -89,7 +93,8 @@ export default function HomePage() {
                   {[...Array(Number(6)).keys()].map((x) => (
                     <Col key={x} xs={12} sm={6} md={4}>
                       <FeedCol
-                        data={newsHome.slice(10 + 3 * (x - 1), 10 + 3 * x)}
+                        topic="home"
+                        data={newsHome.home.slice(10 + 3 * (x - 1), 10 + 3 * x)}
                       ></FeedCol>
                     </Col>
                   ))}

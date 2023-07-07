@@ -1,10 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import Card from "./Card";
-import { getIcon } from "../utils";
 
 export default function FeedRow(props) {
-  const { data } = props;
+  const { data, topic } = props;
   return (
     <Container>
       <Row>
@@ -12,13 +12,18 @@ export default function FeedRow(props) {
           <>
             <Col xs={12} md={5}>
               <div className="main-news-card-lg">
-                <Card cardData={data[0]} size="lg"></Card>
+                <Card topic={topic} cardData={data[0]} size="lg"></Card>
               </div>
             </Col>
             <Col xs md={7}>
               <div className="main-news-card-sm">
                 {data.slice(1, data.length).map((feed, idx) => (
-                  <Card key={idx} cardData={feed} size="md"></Card>
+                  <Card
+                    topic={topic}
+                    key={idx}
+                    cardData={feed}
+                    size="md"
+                  ></Card>
                 ))}
               </div>
             </Col>
@@ -30,12 +35,19 @@ export default function FeedRow(props) {
                 <Container key={idx}>
                   <Row>
                     <Col xs={9}>
-                      <Card key={idx} cardData={feed} size="md"></Card>
+                      <Card
+                        topic={topic}
+                        key={idx}
+                        cardData={feed}
+                        size="md"
+                      ></Card>
                     </Col>
                     <Col xs={3}>
-                      <div className="img-sm">
-                        <img className="round" src={feed.urlToImage}></img>
-                      </div>
+                      <Link to={`/topics/${topic}/entry/${feed.source.id}`}>
+                        <div className="img-sm">
+                          <img className="round" src={feed.urlToImage}></img>
+                        </div>
+                      </Link>
                     </Col>
                   </Row>
                 </Container>

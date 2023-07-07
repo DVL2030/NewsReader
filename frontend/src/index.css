@@ -106,6 +106,10 @@ a.link-disabled {
   text-decoration: underline;
 }
 
+.feed-col .crd {
+  min-height: 9rem;
+}
+
 /* ==========================================
    Img
    ==========================================*/
@@ -204,7 +208,15 @@ button.home-sign-in {
 .crd.feed-col {
   /* max-width: 30rem;
   min-width: 30rem; */
-  min-height: 50rem;
+  /* min-height: 50rem; */
+}
+
+/* =====================================================================================
+   Page CSS
+   ===================================================================================== */
+
+.entry-content p {
+  font-size: 1.5rem;
 }
 
 /* =====================================================================================
@@ -220,18 +232,44 @@ div.container {
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
+  .crd small {
+    font-size: 0.2rem;
+  }
+  .crd h5,
+  .crd span {
+    font-size: 0.6rem;
+  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
+  .crd small,
+  .crd span {
+    font-size: 0.2rem;
+  }
+  .crd h5 {
+    font-size: 0.7rem;
+  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+  .crd small,
+  .crd span {
+    font-size: 0.4rem;
+  }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
+  .crd small,
+  .crd span {
+    font-size: 0.8rem;
+  }
+  .crd h5,
+  .crd span {
+    font-size: 1rem;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
