@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getHomePage } from "../slice/newsSlice";
 
 import { getToday } from "../utils";
@@ -14,8 +14,10 @@ import FeedCol from "../component/FeedCol";
 
 export default function HomePage() {
   const dispatch = useDispatch();
-
-  const signInHandler = () => {};
+  const navigate = useNavigate();
+  const signInHandler = () => {
+    navigate("/signin");
+  };
 
   const newsState = useSelector((state) => state.news);
   const { newsHome, loading, error } = newsState;

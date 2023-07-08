@@ -1,33 +1,40 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import {
-  Col,
-  Nav,
-  Navbar,
-  Container,
-  Row,
-  Form,
-  Button,
-} from "react-bootstrap";
+import { Nav, Navbar, Container, Form, Button } from "react-bootstrap";
 import HomePage from "./page/HomePage";
 import { TOPICS } from "./const/const";
 import TopicPage from "./page/TopicPage";
 import EntryPage from "./page/EntryPage";
-import ScrollToTop from "./component/ScrollToTop";
+import SignInPage from "./page/SignInPage";
+import { signout } from "./slice/userSlice";
+import LoadingBox from "./component/LoadingBox";
 
 function App() {
-  const date = new Date();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state.user);
+  const { userInfo, loading, error } = userState;
 
-  return (
+  const manageAccountHandler = () => {
+    navigate("/user/account");
+  };
+  const signOutHandler = () => {
+    dispatch(signout());
+  };
+
+  return loading ? (
+    <LoadingBox className="m-5" />
+  ) : (
     <div className="App">
       <header>
         <Navbar
           id="search-nav"
           bg="white"
           variant="white"
-          className="flex-column d-flex p-2"
+          className="flex-column d-flex p-3"
           fixed="top"
         >
           <Container fluid id="search-nav-container">
@@ -49,11 +56,80 @@ function App() {
               />
             </Form>
             <Nav>
-              <Nav.Link href="/signin" className="nav-right-item">
-                <Button variant="primary" className="home-sign-in">
-                  Sign in
-                </Button>
-              </Nav.Link>
+              {userInfo ? (
+                <div id="account-drop-down" className=" text-white bg-primary">
+                  <span>
+                    <i className="fa-regular fa-user fa-lg me-2"></i>
+                    <span className="d-none d-lg-inline-block">
+                      {userInfo.name}
+                    </span>
+                  </span>
+                  <div id="drop-down-content">
+                    <div className="drop-down-content-container">
+                      <div className="d-flex drop-down-content-header">
+                        <div className=" drop-down-icon">
+                          <div className="img-avatar">
+                            {userInfo.name.substring(0, 1)}
+                          </div>
+                        </div>
+                        <div className="flex-fill">
+                          <ul className="no-list-style">
+                            <li className="text-dark">{userInfo.name}</li>
+                            <li className="text-secondary">{userInfo.email}</li>
+                            <hr></hr>
+                            <li>
+                              <div className="w-100">
+                                <h5>Your account</h5>
+                                <Button onClick={manageAccountHandler}>
+                                  Manage your account
+                                </Button>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="drop-down-content-body">
+                        <Link
+                          to="/user/bookmark"
+                          className="d-flex justify-content-center"
+                        >
+                          <div className="bookmark-icon drop-down-icon">
+                            <i className="fa-regular fa-bookmark fa-2x "></i>
+                          </div>
+                          <div className="flex-fill">
+                            <span>Bookmark</span>
+                          </div>
+                        </Link>
+                        <Link to="/user/subscription" className="d-flex">
+                          <div className="bookmark-icon drop-down-icon">
+                            <i className="fa-regular fa-folder-open fa-2x"></i>
+                          </div>
+                          <div className="flex-fill">
+                            <span>Subscription</span>
+                          </div>
+                        </Link>
+                      </div>
+                      <div
+                        to="/user/bookmark"
+                        className="d-flex justify-content-center drop-down-content-footer"
+                      >
+                        <div className="sign-out-icon drop-down-icon">
+                          <i className="fa fa-sign-out fa-2x"></i>
+                        </div>
+                        <div className="flex-fill" onClick={signOutHandler}>
+                          <span>Sign out</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Nav.Link href="/signin" className="nav-right-item">
+                  <Button variant="primary" className="home-sign-in">
+                    Sign in
+                  </Button>
+                </Nav.Link>
+              )}
             </Nav>
           </Container>
           <Container className="d-flex justify-content-center">
@@ -94,6 +170,7 @@ function App() {
             exact
             element={<EntryPage />}
           />
+          <Route path="/signin" exact element={<SignInPage />}></Route>
         </Routes>
       </main>
     </div>

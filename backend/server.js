@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {});
 
-app.use("/api/user", userRouter);
+app.use("/api/users", userRouter);
 app.use("/api/news", newsRouter);
 
 app.use((err, req, res, next) => {
