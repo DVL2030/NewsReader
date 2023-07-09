@@ -32,7 +32,7 @@ export default function HomePage() {
     <div>
       {error && <MessageBox variants="danger">{error}</MessageBox>}
 
-      {newsHome.home && (
+      {newsHome && newsHome.home && (
         <Container id="main-container" className="py-5">
           <div className="main-message">
             <h4>Your briefing</h4>

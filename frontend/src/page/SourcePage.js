@@ -6,32 +6,23 @@ import { useParams } from "react-router-dom";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
 import FeedRow from "../component/FeedRow";
-
-import { getTopic } from "../slice/newsSlice";
-
-export default function TopicPage() {
+export default function SourcePage() {
   const dispatch = useDispatch();
   const param = useParams();
-  const { topic } = param;
+  const { source } = param;
 
   const newsState = useSelector((state) => state.news);
-  const { newsHome, loading, error } = newsState;
-
-  useEffect(() => {
-    if (!newsHome || !newsHome[topic]) {
-      dispatch(getTopic(topic));
-    }
-  }, []);
+  const { newsSource, loading, error } = newsState;
 
   return loading ? (
     <LoadingBox />
   ) : (
     <div>
       {error && <MessageBox variants="danger">{error}</MessageBox>}
-      {newsHome && newsHome[topic] && (
+      {newsSource && (
         <Container id="topic-container" className="py-5">
           <div className="main-message">
-            <h4>{topic}</h4>
+            <h4>{source}</h4>
           </div>
           <Row>
             <Col>
@@ -39,8 +30,7 @@ export default function TopicPage() {
                 {[...Array(Number(10)).keys()].map((x) => (
                   <FeedRow
                     key={x}
-                    topic={topic}
-                    data={newsHome[topic].slice(4 * (x - 1), 4 * x)}
+                    data={newsSource.slice(4 * (x - 1), 4 * x)}
                   ></FeedRow>
                 ))}
               </div>

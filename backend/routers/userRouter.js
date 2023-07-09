@@ -86,7 +86,6 @@ userRouter.post(
           "A user with that email has already registered. Please use a different email..",
       });
     }
-
     try {
       await query(
         "INSERT INTO users(name, email, password) VALUES ($1, $2, $3)",

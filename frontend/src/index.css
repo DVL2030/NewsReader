@@ -41,7 +41,7 @@ span.logo-line-2 {
 button.search {
   float: left;
   position: absolute;
-  top: 0.2rem;
+  top: 0.9rem;
   border: none;
   background-color: transparent;
   width: 1rem;
@@ -259,6 +259,7 @@ select:hover {
 
 button.home-sign-in {
   width: 7rem;
+  min-height: 2.4rem;
   background-color: var(--main-theme-blue);
   color: floralwhite;
   font-weight: bold;

@@ -7,6 +7,7 @@ const newsHome = localStorage.getItem("newsHome")
 
 const initialState = {
   newsHome,
+  newsSource: null,
   loading: false,
   error: null,
 };
@@ -50,6 +51,24 @@ export const getTopic = createAsyncThunk(
   }
 );
 
+export const getSource = createAsyncThunk(
+  "news/source",
+  async (source, { rejectWithValue }) => {
+    try {
+      const res = await axios.post("/api/news/source", { source: source });
+      const resData = res.data;
+
+      return resData;
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    }
+  }
+);
+
 const newsSlice = createSlice({
   name: "news",
   initialState,
@@ -76,6 +95,18 @@ const newsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(getTopic.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(getSource.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getSource.fulfilled, (state, action) => {
+      state.newsSource = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(getSource.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });

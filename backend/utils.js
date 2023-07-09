@@ -14,3 +14,13 @@ export const generateToken = (user) => {
     }
   );
 };
+
+export const TOPICS = [
+  "world",
+  "business",
+  "technology",
+  "entertainment",
+  "sports",
+  "science",
+  "health",
+];
