@@ -43,9 +43,13 @@ export default function FeedRow(props) {
                       ></Card>
                     </Col>
                     <Col xs={3}>
-                      <Link to={`/topics/${topic}/entry/${feed.source.id}`}>
+                      <Link
+                        to={`${topic ? `/topics/${topic}` : ""}/entry/${
+                          feed.id
+                        }`}
+                      >
                         <div className="img-sm">
-                          <img className="round" src={feed.urlToImage}></img>
+                          <img className="round" src={feed.urltoimage}></img>
                         </div>
                       </Link>
                     </Col>

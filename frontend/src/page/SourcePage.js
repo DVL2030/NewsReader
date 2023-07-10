@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
 import FeedRow from "../component/FeedRow";
+import { getSource } from "../slice/newsSlice";
+import Card from "../component/Card";
 export default function SourcePage() {
   const dispatch = useDispatch();
   const param = useParams();
@@ -14,12 +16,15 @@ export default function SourcePage() {
   const newsState = useSelector((state) => state.news);
   const { newsSource, loading, error } = newsState;
 
+  useEffect(() => {
+    dispatch(getSource(source));
+  }, []);
+
   return loading ? (
     <LoadingBox />
   ) : (
     <div>
-      {error && <MessageBox variants="danger">{error}</MessageBox>}
-      {newsSource && (
+      {newsSource && newsSource.length > 0 ? (
         <Container id="topic-container" className="py-5">
           <div className="main-message">
             <h4>{source}</h4>
@@ -37,6 +42,8 @@ export default function SourcePage() {
             </Col>
           </Row>
         </Container>
+      ) : (
+        error && <MessageBox variants="danger">{error}</MessageBox>
       )}
     </div>
   );

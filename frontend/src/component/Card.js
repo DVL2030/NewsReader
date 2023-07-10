@@ -9,10 +9,10 @@ export default function Card(props) {
     <div className="crd border-none">
       {size == "lg" && (
         <div className="crd-image">
-          <Link to={`/topics/${topic}/entry/${cardData.source.id}`}>
+          <Link to={`${topic ? `/topics/${topic}` : ""}/entry/${cardData.id}`}>
             <img
               className="round"
-              src={cardData.urlToImage}
+              src={cardData.urltoimage}
               alt="feed-image"
             ></img>
           </Link>
@@ -27,13 +27,13 @@ export default function Card(props) {
             ></img>
           </div>
         )}
-        <Link to={`/source/${cardData.source.name}`} className="d-inline-block">
-          <span>{cardData.source.name}</span>
+        <Link to={`/source/${cardData.source}`} className="d-inline-block">
+          <span>{cardData.source}</span>
         </Link>
       </div>
       <div className="crd-title">
         <Link
-          to={`/topics/${topic}/entry/${cardData.source.id}`}
+          to={`${topic ? `/topics/${topic}` : ""}/entry/${cardData.id}`}
           className="text-secondary"
         >
           <h5>
@@ -46,7 +46,7 @@ export default function Card(props) {
 
       <div className="m-0">
         <small className="text-secondary">
-          {calcTimeDiff(cardData.publishedAt)}
+          {calcTimeDiff(cardData.publishedat)}
         </small>
       </div>
     </div>

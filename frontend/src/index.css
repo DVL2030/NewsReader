@@ -341,6 +341,10 @@ form.sign-in > div {
   flex-direction: column;
 }
 
+#feedly-content {
+  background-color: var(--main-theme-lightblue);
+}
+
 /* =====================================================================================
    Responsive Layout
    ===================================================================================== */

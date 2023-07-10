@@ -3,16 +3,16 @@ import expressAsyncHandler from "express-async-handler";
 import dotenv from "dotenv";
 import fetch from "node-fetch";
 import cron from "node-cron";
-import { v4 as uuidv4 } from "uuid";
 import { TOPICS } from "../utils.js";
 import { query } from "../db/db.js";
+import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
 const newsRouter = express.Router();
 
 const host = process.env.NEWS_HOST;
 const apikey = process.env.NEWS_API;
-const feedly = process.env.FEEDLY_HOST;
+const feedly_host = process.env.FEEDLY_HOST;
 const newsPerPage = process.env.NEWS_PER_PAGE;
 
 // Cron job to fetch news from home every hour.
@@ -22,14 +22,18 @@ cron.schedule("0 * * * *", async () => {
     const response = await fetch(url);
     const data = await response.json();
 
+    // Reset serial sequence to 1.
+    // SELECT setval('news_id_seq', 1, false);
+
     // Update table with the most recent news.
     await query("TRUNCATE news");
     const q =
-      "INSERT INTO news(author, title, description, url, urlToImage, publishedAt, content, topic) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)";
+      "INSERT INTO news(source, author, title, description, url, urlToImage, publishedAt, content, topic) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)";
 
     await Promise.all(
       data.articles.map(async (d) => {
         await query(q, [
+          d.source.name,
           d.author,
           d.title,
           d.description,
@@ -55,6 +59,7 @@ cron.schedule("0 * * * *", async () => {
         await Promise.all(
           data.articles.map(async (d) => {
             await query(q, [
+              d.source.name,
               d.author,
               d.title,
               d.description,
@@ -77,11 +82,9 @@ newsRouter.get(
   "/home",
   expressAsyncHandler(async (req, res) => {
     try {
-      const url = `${host}top-headlines?country=us&apiKey=${apikey}&pageSize=30`;
-      const response = await fetch(url);
-      const data = await response.json();
+      const data = await query("SELECT * FROM news WHERE topic='home';");
 
-      return res.status(201).send({ home: newData });
+      return res.status(201).send({ home: data });
     } catch (error) {
       return res.status(401).send({
         message: error.message,
@@ -95,18 +98,9 @@ newsRouter.post(
   expressAsyncHandler(async (req, res) => {
     const { topic } = req.body;
     try {
-      const url = `${host}top-headlines?country=us&category=${
-        topic === "world" ? "general" : topic
-      }&apiKey=${apikey}&pageSize=${newsPerPage}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      // create Id for Each entry because Id is not given by default.
-      const newData = data.articles.map((d) => {
-        let update = { ...d, source: { id: uuidv4(), name: d.source.name } };
-        return update;
-      });
+      const data = await query("SELECT * FROM news WHERE topic=$1;", [topic]);
       const json = {};
-      json[topic] = newData;
+      json[topic] = data;
       return res.status(201).send(json);
     } catch (error) {
       return res.status(401).send({
@@ -122,13 +116,97 @@ newsRouter.post(
     const { source } = req.body;
 
     try {
-      const url = `${host}top-headlines?sources=${encodeURIComponent(
+      const url = `${feedly_host}search/feeds?query=${encodeURIComponent(
         source
-      )}&apiKey=${apikey}&pageSize=${newsPerPage}`;
+      )}`;
       const response = await fetch(url);
       const data = await response.json();
+      if (data.results.length === 0)
+        return res.status(401).send({
+          message: `Failed to retrieve stream data from source name: ${source}... Please try again or choose a different source to stream`,
+        });
+      else {
+        // Get Stream Id
+        const stream_id = data.results[0].id;
+        const url = `${feedly_host}streams/contents?streamId=${stream_id}&count=200`;
+        const response = await fetch(url);
+        const resData = await response.json();
+        const collector = [];
 
-      return res.status(201).send(data);
+        // Save stream data into the collector array;
+        resData.items.map((item) => {
+          let json = {
+            id: item.id.split("_")[1],
+            // id: item.id,
+            source: item.origin.title,
+            author: item.author,
+            title: item.title,
+            url: item.alternate[0].href,
+            urltoimage: item.visual ? item.visual.url : null,
+            publishedat: item.published,
+          };
+          collector.push(json);
+        });
+        return res.status(201).send(collector);
+      }
+    } catch (error) {
+      return res.status(401).send({
+        message: error.message,
+      });
+    }
+  })
+);
+
+newsRouter.post(
+  "/entry",
+  expressAsyncHandler(async (req, res) => {
+    const { id } = req.body;
+
+    try {
+      const url = `${feedly_host}entries/${id}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.length === 0)
+        return res.status(401).send({
+          message: `Failed to retrieve an entry with id: ${id}...`,
+        });
+      else {
+        // Get Stream Id
+        const entry = data[0];
+
+        // Parse description
+        const description = entry.summary
+          ? entry.summary.content.search("<figure") === -1
+            ? entry.summary.content
+            : entry.summary.content.substring(
+                entry.summary.content.search("</figure>") + 9
+              )
+          : null;
+        const content = entry.content
+          ? entry.content.content.search("<figure") === -1
+            ? entry.content
+            : entry.content.content.substring(
+                entry.content.content.lastIndexOf("</figure>") + 9
+              )
+          : null;
+
+        // Save an entry data into a json;
+        let json = {
+          //   id: entry.id,
+          id: entry.id.split("_")[1],
+          keywords: entry.keywords,
+          source: entry.origin.title,
+          author: entry.author,
+          title: entry.title,
+          description: description,
+          url: entry.alternate[0].href,
+          urltoimage: entry.visual ? entry.visual.url : null,
+          thumbnail: entry.thumbnail ? entry.thumbnail[0] : null,
+          publishedat: entry.published,
+          content: content,
+        };
+        return res.status(201).send(json);
+      }
     } catch (error) {
       return res.status(401).send({
         message: error.message,

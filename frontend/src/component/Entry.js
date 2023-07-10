@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { calcTimeDiff, extractURLParam, getIcon } from "../utils";
+import { calcTimeDiff, extractURLParam, getIcon, parseDOM } from "../utils";
 import { Link } from "react-router-dom";
 
 export default function Entry(props) {
-  const { entry } = props;
+  const { entry, type } = props;
+
+  useEffect(() => {
+    let dom;
+
+    if (type === "feedly") {
+      const feedlyDiv = document.getElementById("feedly-content");
+      if (feedlyDiv !== null) {
+        if (entry.content) {
+          dom = parseDOM(entry.content);
+        } else if (entry.description) {
+          dom = parseDOM(entry.description);
+        }
+        if (!feedlyDiv.hasChildNodes()) feedlyDiv.appendChild(dom);
+        dom.style.backgroundColor = "inherit";
+      }
+    }
+  }, []);
+
   return (
     <Container>
       <Row>
@@ -12,9 +30,12 @@ export default function Entry(props) {
           <div className="entry-header mb-3">
             <h1>{entry.title}</h1>
           </div>
-          <div className="entry-description mb-4">
-            <h5 className="text-muted">{entry.description}</h5>
-          </div>
+          {entry.content !== null && (
+            <div className="entry-description mb-4">
+              <h5 className="text-muted">{entry.description}</h5>
+            </div>
+          )}
+
           <div className="entry-info d-flex justify-content-between">
             <div className="entry-info-left ">
               <div className="entry-author">
@@ -24,7 +45,7 @@ export default function Entry(props) {
               </div>
               <div className="entry-pubDate">
                 <span className="text-secondary">
-                  {calcTimeDiff(entry.publishedAt)}
+                  {calcTimeDiff(entry.publishedat)}
                 </span>
               </div>
             </div>
@@ -36,11 +57,8 @@ export default function Entry(props) {
                     src={getIcon(entry.url)}
                   ></img>
                 </div>
-                <Link
-                  to={`/source/${entry.source.name}`}
-                  className="d-inline-block"
-                >
-                  <span>{entry.source.name}</span>
+                <Link to={`/source/${entry.source}`} className="d-inline-block">
+                  <span>{entry.source}</span>
                 </Link>
               </div>
             </div>
@@ -48,17 +66,13 @@ export default function Entry(props) {
 
           <hr></hr>
           <div className="entry-image">
-            <img src={entry.urlToImage} alt="entry-image"></img>
+            <img src={entry.urltoimage} alt="entry-image"></img>
           </div>
 
           <div className="entry-content m-5 p-2">
-            {entry.content && (
-              <p>
-                {entry.content.substring(
-                  0,
-                  entry.content.search(/\[\+\d+ chars\]/m)
-                )}
-              </p>
+            {type === "home" && entry.content && <p>{entry.content}</p>}
+            {type === "feedly" && (entry.content || entry.description) && (
+              <div id="feedly-content"></div>
             )}
             {entry.url && entry.url.includes("youtube") && (
               <div>

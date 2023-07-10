@@ -11,6 +11,7 @@ import EntryPage from "./page/EntryPage";
 import SignInPage from "./page/SignInPage";
 import { signout } from "./slice/userSlice";
 import LoadingBox from "./component/LoadingBox";
+import SourcePage from "./page/SourcePage";
 
 function App() {
   const navigate = useNavigate();
@@ -165,12 +166,14 @@ function App() {
           <Route path="/" exact element={<HomePage />} />
           <Route path="/home" exact element={<HomePage />} />
           <Route path="/topics/:topic" exact element={<TopicPage />} />
+          <Route path="/entry/:id" exact element={<EntryPage />} />
           <Route
             path="/topics/:topic/entry/:id"
             exact
             element={<EntryPage />}
           />
           <Route path="/signin" exact element={<SignInPage />}></Route>
+          <Route path="/source/:source" exact element={<SourcePage />}></Route>
         </Routes>
       </main>
     </div>

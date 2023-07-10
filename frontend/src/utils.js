@@ -35,6 +35,11 @@ export const getIcon = (url) => {
 export const extractURLParam = (url, param) => {
   const params = new URL(url).searchParams;
   const value = params.get(param);
-  console.log(value);
   return value;
+};
+
+export const parseDOM = (htmlToConvert) => {
+  const parser = new DOMParser();
+  const html = parser.parseFromString(htmlToConvert, "text/html");
+  return html.body;
 };
