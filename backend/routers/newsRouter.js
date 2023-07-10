@@ -1,7 +1,6 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import dotenv from "dotenv";
-import fetch from "node-fetch";
 import cron from "node-cron";
 import { TOPICS } from "../utils.js";
 import { query } from "../db/db.js";

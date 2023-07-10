@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import newsSlice from "./slice/newsSlice";
 import userSlice from "./slice/userSlice";
+import subSlice from "./slice/subSlice";
+import feedSlice from "./slice/feedSlice";
 
 const initialState = {
   user: {
@@ -20,6 +22,8 @@ export const store = configureStore({
     // userAuth: userAuthSlice,
     user: userSlice,
     news: newsSlice,
+    subscription: subSlice,
+    feed: feedSlice,
   },
   preloadedState: initialState,
 });

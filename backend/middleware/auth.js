@@ -1,6 +1,7 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const isAuth = (req, res, next) => {
   const auth = req.headers.authorization;

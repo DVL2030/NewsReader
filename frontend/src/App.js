@@ -2,6 +2,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
 import { Nav, Navbar, Container, Form, Button } from "react-bootstrap";
 import HomePage from "./page/HomePage";
@@ -12,12 +13,21 @@ import SignInPage from "./page/SignInPage";
 import { signout } from "./slice/userSlice";
 import LoadingBox from "./component/LoadingBox";
 import SourcePage from "./page/SourcePage";
+import FeedPage from "./page/FeedPage";
+import SubscriptionPage from "./page/SubscriptionPage";
+import PrivateRoute from "./component/PrivateRoute";
+import FeedSearchResultPage from "./page/FeedSearchResultPage";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [keyword, setKeyword] = useState("");
   const userState = useSelector((state) => state.user);
   const { userInfo, loading, error } = userState;
+
+  const searchHandler = () => {
+    navigate(`/feed/search/${keyword}`);
+  };
 
   const manageAccountHandler = () => {
     navigate("/user/account");
@@ -45,7 +55,11 @@ function App() {
                 <span className="logo-line-2">Reader</span>
               </div>
             </Navbar.Brand>
-            <Form id="home-search-form" className="d-flex">
+            <Form
+              id="home-search-form"
+              className="d-flex"
+              onSubmit={searchHandler}
+            >
               <button className="search" type="submit">
                 <i className="fa fa-search bg-none"></i>
               </button>
@@ -54,6 +68,7 @@ function App() {
                 placeholder="Search"
                 aria-label="Search"
                 id="home-search-control"
+                onChange={(e) => setKeyword(e.target.value)}
               />
             </Form>
             <Nav>
@@ -90,6 +105,17 @@ function App() {
                         </div>
                       </div>
                       <div className="drop-down-content-body">
+                        <Link
+                          to="/user/feeds"
+                          className="d-flex justify-content-center"
+                        >
+                          <div className="feeds-icon drop-down-icon">
+                            <i className="fa-solid fa-rss fa-2x "></i>
+                          </div>
+                          <div className="flex-fill">
+                            <span>Feeds</span>
+                          </div>
+                        </Link>
                         <Link
                           to="/user/bookmark"
                           className="d-flex justify-content-center"
@@ -136,8 +162,9 @@ function App() {
           <Container className="d-flex justify-content-center">
             <Nav className="menu-bar">
               <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/feed">Feeds</Nav.Link>
-              <Nav.Link href="/bookmark">Bookmark</Nav.Link>
+              <Nav.Link href="/user/feeds">Feeds</Nav.Link>
+              <Nav.Link href="/user/subscription">Subscription</Nav.Link>
+              <Nav.Link href="/user/bookmark">Bookmark</Nav.Link>
               <hr className="vr d-none d-sm-block"></hr>
 
               {TOPICS.map((top, idx) => (
@@ -174,6 +201,29 @@ function App() {
           />
           <Route path="/signin" exact element={<SignInPage />}></Route>
           <Route path="/source/:source" exact element={<SourcePage />}></Route>
+          <Route
+            path="/user/feeds"
+            exact
+            element={
+              <PrivateRoute>
+                <FeedPage />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/user/subscription"
+            exact
+            element={
+              <PrivateRoute>
+                <SubscriptionPage />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/feed/search/:keyword"
+            exact
+            element={<FeedSearchResultPage />}
+          ></Route>
         </Routes>
       </main>
     </div>

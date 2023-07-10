@@ -15,6 +15,7 @@ export default function Entry(props) {
         if (entry.content) {
           dom = parseDOM(entry.content);
         } else if (entry.description) {
+          if (!entry.description.includes("</")) return;
           dom = parseDOM(entry.description);
         }
         if (!feedlyDiv.hasChildNodes()) feedlyDiv.appendChild(dom);
@@ -30,7 +31,7 @@ export default function Entry(props) {
           <div className="entry-header mb-3">
             <h1>{entry.title}</h1>
           </div>
-          {entry.content !== null && (
+          {entry.description && !entry.description.includes("</") && (
             <div className="entry-description mb-4">
               <h5 className="text-muted">{entry.description}</h5>
             </div>
@@ -38,11 +39,14 @@ export default function Entry(props) {
 
           <div className="entry-info d-flex justify-content-between">
             <div className="entry-info-left ">
-              <div className="entry-author">
-                <span>
-                  By <b>{entry.author}</b>
-                </span>
-              </div>
+              {entry.author && (
+                <div className="entry-author">
+                  <span>
+                    By <b>{entry.author}</b>
+                  </span>
+                </div>
+              )}
+
               <div className="entry-pubDate">
                 <span className="text-secondary">
                   {calcTimeDiff(entry.publishedat)}
@@ -65,9 +69,11 @@ export default function Entry(props) {
           </div>
 
           <hr></hr>
-          <div className="entry-image">
-            <img src={entry.urltoimage} alt="entry-image"></img>
-          </div>
+          {entry.urltoimage && (
+            <div className="entry-image">
+              <img src={entry.urltoimage} alt="entry-image"></img>
+            </div>
+          )}
 
           <div className="entry-content m-5 p-2">
             {type === "home" && entry.content && <p>{entry.content}</p>}

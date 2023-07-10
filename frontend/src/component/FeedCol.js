@@ -7,7 +7,12 @@ import { Link } from "react-router-dom";
 export default function FeedCol(props) {
   const { data, topic } = props;
   return (
-    <Container className="crd feed-col p-4 m-2">
+    <Container
+      className="crd feed-col p-4 m-2"
+      // data-aos="fade-up"
+      // data-aos-duration="500"
+      // data-aos-anchor-placement="top-bottom"
+    >
       <Row>
         <Col>
           <div className="main-news-card-sm">
