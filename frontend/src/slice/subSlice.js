@@ -8,8 +8,7 @@ const stream = localStorage.getItem("stream")
 
 const initialState = {
   subscription: null,
-  subscribeLoading: false,
-  unsubscribeLoading: false,
+  subLoading: false,
   stream,
   loading: false,
   success: false,
@@ -76,7 +75,7 @@ export const unSubscribeFeed = createAsyncThunk(
     try {
       const res = await Axios({
         method: "post",
-        url: "/api/subscription/subscribe",
+        url: "/api/subscription/unsubscribe",
         data: { userId: userInfo.id, id: feedId },
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
@@ -135,27 +134,29 @@ const userSlice = createSlice({
       state.error = action.payload;
     });
     builder.addCase(subscribeFeed.pending, (state) => {
-      state.subscribeLoading = true;
+      state.subLoading = true;
+      state.success = false;
     });
     builder.addCase(subscribeFeed.fulfilled, (state, action) => {
-      state.subscribeLoading = false;
+      state.subLoading = false;
       state.error = null;
       state.success = action.payload;
     });
     builder.addCase(subscribeFeed.rejected, (state, action) => {
-      state.subscribeLoading = false;
+      state.subLoading = false;
       state.error = action.payload;
     });
     builder.addCase(unSubscribeFeed.pending, (state) => {
-      state.unsubscribeLoading = true;
+      state.subLoading = true;
+      state.success = false;
     });
     builder.addCase(unSubscribeFeed.fulfilled, (state, action) => {
-      state.unsubscribeLoading = false;
+      state.subLoading = false;
       state.error = null;
       state.success = action.payload;
     });
     builder.addCase(unSubscribeFeed.rejected, (state, action) => {
-      state.unsubscribeLoading = false;
+      state.subLoading = false;
       state.error = action.payload;
     });
     builder.addCase(streamFeed.pending, (state) => {

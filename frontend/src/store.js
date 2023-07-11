@@ -24,7 +24,6 @@ const initialState = {
 
 export const store = configureStore({
   reducer: {
-    // userAuth: userAuthSlice,
     user: userSlice,
     news: newsSlice,
     subscription: subSlice,

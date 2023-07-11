@@ -92,8 +92,10 @@ subRouter.post(
   expressAsyncHandler(async (req, res) => {
     const { userId, id } = req.body;
     try {
-      const result = await query("", [userId]);
-
+      //   const result = await query(
+      //     "UPDATE subscription SET feeds = (SELECT ARRAY_REMOVE(feeds, $1) FROM subscription WHERE userid=$2)",
+      //     [id, userId]
+      //   );
       return res.status(201).send({ success: true });
     } catch (error) {
       return res.status(401).send({

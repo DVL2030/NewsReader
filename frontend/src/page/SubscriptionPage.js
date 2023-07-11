@@ -1,16 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getSubscription } from "../slice/subSlice";
+import {
+  getSubscription,
+  subscribeFeed,
+  unSubscribeFeed,
+} from "../slice/subSlice";
 
 export default function SubscriptionPage() {
   const dispatch = useDispatch();
   const subState = useSelector((state) => state.subscription);
-  const { subscription, loading, error } = subState;
+  const { subscription, loading, error, success, subLoading } = subState;
+  const [subIdx, setSubIdx] = useState(-1);
+  const [subType, setSubType] = useState("unsub");
 
-  const deleteSubHandler = () => {};
+  const subHandler = (val, id, idx) => {
+    if (val === "sub") {
+      setSubType("sub");
+      setSubIdx(idx);
+      dispatch(subscribeFeed(id));
+    } else if (val === "unsub") {
+      setSubType("unsub");
+      setSubIdx(idx);
+      dispatch(unSubscribeFeed(id));
+    }
+  };
 
   useEffect(() => {
     dispatch(getSubscription());
@@ -22,6 +38,17 @@ export default function SubscriptionPage() {
     <MessageBox variants="danger">{error}</MessageBox>
   ) : subscription && subscription.length > 0 ? (
     <Container>
+      {success && (
+        <MessageBox variants="success">
+          {subType === "sub" ? (
+            <span> You have successfully subscribed.</span>
+          ) : (
+            subType === "unsub" && (
+              <span> You have successfully unsubscribed.</span>
+            )
+          )}
+        </MessageBox>
+      )}
       <Row>
         {subscription.map((s, idx) => (
           <Col
@@ -44,10 +71,19 @@ export default function SubscriptionPage() {
             <div>
               <Button
                 type="button"
-                className="delete-sub"
-                onClick={deleteSubHandler}
+                value={
+                  subscription.find((sc) => sc.id === s.id) ? "unsub" : "sub"
+                }
+                onClick={(e) => subHandler(e.target.value, s.id, idx)}
               >
-                Delete
+                {subLoading && subIdx === idx ? (
+                  <i className="fa-solid fa-spinner fa-spin"></i>
+                ) : !subscription.find((sc) => sc.id === s.id) &&
+                  subIdx === idx ? (
+                  "Subscribe"
+                ) : (
+                  "Unsubscribe"
+                )}
               </Button>
             </div>
           </Col>

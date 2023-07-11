@@ -36,10 +36,8 @@ export const getTopic = createAsyncThunk(
     try {
       const res = await axios.post("/api/news/topic", { topic: topic });
       const resData = res.data;
-      // Push to LocalStorage to store all entries in one array.
       const storageData = JSON.parse(localStorage.getItem("newsHome"));
       const newStorage = { ...storageData, ...resData };
-
       localStorage.setItem("newsHome", JSON.stringify(newStorage));
       return newStorage;
     } catch (error) {

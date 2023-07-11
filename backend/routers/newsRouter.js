@@ -5,6 +5,7 @@ import cron from "node-cron";
 import { TOPICS } from "../utils.js";
 import { query } from "../db/db.js";
 import { v4 as uuidv4 } from "uuid";
+import { getTopicNews, insertNews } from "../services/newsService.js";
 
 dotenv.config();
 const newsRouter = express.Router();
@@ -17,31 +18,19 @@ const newsPerPage = process.env.NEWS_PER_PAGE;
 // Cron job to fetch news from home every hour.
 cron.schedule("0 * * * *", async () => {
   try {
-    const url = `${host}top-headlines?country=us&apiKey=${apikey}&pageSize=30`;
+    const url = `${host}top-headlines?country=us&apiKey=${apikey}&pageSize=40`;
     const response = await fetch(url);
     const data = await response.json();
 
     // Reset serial sequence to 1.
-    // SELECT setval('news_id_seq', 1, false);
+    await query("SELECT setval('news_id_seq', 1, false)");
 
     // Update table with the most recent news.
     await query("TRUNCATE news");
-    const q =
-      "INSERT INTO news(source, author, title, description, url, urlToImage, publishedAt, content, topic) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)";
 
     await Promise.all(
       data.articles.map(async (d) => {
-        await query(q, [
-          d.source.name,
-          d.author,
-          d.title,
-          d.description,
-          d.url,
-          d.urlToImage,
-          d.publishedAt,
-          d.content,
-          "home",
-        ]);
+        await insertNews(d, "home");
       })
     );
 
@@ -57,17 +46,7 @@ cron.schedule("0 * * * *", async () => {
 
         await Promise.all(
           data.articles.map(async (d) => {
-            await query(q, [
-              d.source.name,
-              d.author,
-              d.title,
-              d.description,
-              d.url,
-              d.urlToImage,
-              d.publishedAt,
-              d.content,
-              topic,
-            ]);
+            await insertNews(d, topic);
           })
         );
       })
@@ -81,9 +60,8 @@ newsRouter.get(
   "/home",
   expressAsyncHandler(async (req, res) => {
     try {
-      const data = await query("SELECT * FROM news WHERE topic='home';");
-
-      return res.status(201).send({ home: data });
+      const data = await getTopicNews("home");
+      return res.status(201).send(data);
     } catch (error) {
       return res.status(401).send({
         message: error.message,
@@ -97,10 +75,9 @@ newsRouter.post(
   expressAsyncHandler(async (req, res) => {
     const { topic } = req.body;
     try {
-      const data = await query("SELECT * FROM news WHERE topic=$1;", [topic]);
-      const json = {};
-      json[topic] = data;
-      return res.status(201).send(json);
+      const data = await getTopicNews(topic);
+      console.log(data);
+      return res.status(201).send(data);
     } catch (error) {
       return res.status(401).send({
         message: error.message,
@@ -142,7 +119,6 @@ newsRouter.post(
         resData.items.map((item) => {
           let json = {
             id: item.id.split("_")[1],
-            // id: item.id,
             source: item.origin.title,
             author: item.author,
             title: item.title,
@@ -181,18 +157,18 @@ newsRouter.post(
 
         // Parse description
         const description = entry.summary
-          ? entry.summary.content.search("<figure") === -1
-            ? entry.summary.content
-            : entry.summary.content.substring(
+          ? entry.summary.content.search("<figure") > 0
+            ? entry.summary.content.substring(
                 entry.summary.content.search("</figure>") + 9
               )
+            : entry.summary.content
           : null;
         const content = entry.content
-          ? entry.content.content.search("<figure") === -1
-            ? entry.content
-            : entry.content.content.substring(
+          ? entry.content.content.search("<figure") > 0
+            ? entry.content.content.substring(
                 entry.content.content.lastIndexOf("</figure>") + 9
               )
+            : entry.content
           : null;
 
         // Save an entry data into a json;
