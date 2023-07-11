@@ -15,6 +15,11 @@ const initialState = {
       ? JSON.parse(localStorage.getItem("newsHome"))
       : null,
   },
+  sub: {
+    stream: localStorage.getItem("stream")
+      ? JSON.parse(localStorage.getItem("stream"))
+      : null,
+  },
 };
 
 export const store = configureStore({

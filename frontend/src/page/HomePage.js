@@ -19,8 +19,14 @@ export default function HomePage() {
     navigate("/signin");
   };
 
+  const userState = useSelector((state) => state.user);
+  const { userInfo } = userState;
+
   const newsState = useSelector((state) => state.news);
   const { newsHome, loading, error } = newsState;
+
+  const subState = useSelector((state) => state.sub);
+  const { stream, loading: streamLoading, error: streamError } = subState;
 
   useEffect(() => {
     if (!newsHome || !newsHome.home) dispatch(getHomePage());
@@ -64,22 +70,45 @@ export default function HomePage() {
                   <h5>Picks for you</h5>
                 </div>
                 <hr></hr>
-                <div>
-                  <div className="mb-2">
-                    <span>
-                      Sign in for personalized stories in your briefing & news
-                      feed
-                    </span>
+                {userInfo ? (
+                  <div>
+                    {streamLoading ? (
+                      <span>
+                        <i className="fa-solid fa-spinner fa-spin"></i>
+                      </span>
+                    ) : streamError ? (
+                      <MessageBox variants>
+                        <span>Sorry, please refresh this page...</span>
+                      </MessageBox>
+                    ) : (
+                      stream &&
+                      stream.length > 0 && (
+                        <div>
+                          {stream.slice(0, 4).map((s, idx) => (
+                            <FeedRow key={idx} data={[s]}></FeedRow>
+                          ))}
+                        </div>
+                      )
+                    )}
                   </div>
+                ) : (
+                  <div>
+                    <div className="mb-2">
+                      <span>
+                        Sign in for personalized stories in your briefing & news
+                        feed
+                      </span>
+                    </div>
 
-                  <Button
-                    variant="primary"
-                    className="home-sign-in w-100"
-                    onClick={signInHandler}
-                  >
-                    Sign in
-                  </Button>
-                </div>
+                    <Button
+                      variant="primary"
+                      className="home-sign-in w-100"
+                      onClick={signInHandler}
+                    >
+                      Sign in
+                    </Button>
+                  </div>
+                )}
               </div>
             </Col>
             <Col xs={12}></Col>

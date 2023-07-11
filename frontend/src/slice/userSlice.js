@@ -56,6 +56,7 @@ export const signout = createAsyncThunk(
         new Promise((resolve, reject) => setTimeout(resolve, delay));
       await wait(1000);
       localStorage.removeItem("userInfo");
+      localStorage.removeItem("stream");
       return null;
     } catch (error) {
       return rejectWithValue(

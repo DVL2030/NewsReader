@@ -120,7 +120,7 @@ subRouter.post(
       if (feeds.length > 0) {
         await Promise.all(
           feeds.map(async (feed) => {
-            const url = `${process.env.FEEDLY_HOST}streams/contents?streamId=${feed}&count=5`;
+            const url = `${process.env.FEEDLY_HOST}streams/contents?streamId=${feed}&count=20`;
             const data = await fetchWithRandAgent(url);
 
             // Save stream data into the collector array;
