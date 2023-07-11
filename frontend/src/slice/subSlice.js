@@ -4,7 +4,11 @@ import Axios from "axios";
 
 const initialState = {
   subscription: null,
+  subscribeLoading: false,
+  unsubscribeLoading: false,
+  stream: null,
   loading: false,
+  success: false,
   error: null,
 };
 
@@ -18,10 +22,86 @@ export const getSubscription = createAsyncThunk(
     } = getState();
     try {
       const res = await Axios({
-        method: "get",
+        method: "post",
         url: "/api/subscription/get",
+        data: { userId: userInfo.id },
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    }
+  }
+);
+
+export const subscribeFeed = createAsyncThunk(
+  "subscription/subscribe",
+  async (feed, { rejectWithValue, getState }) => {
+    const {
+      user: { userInfo },
+    } = getState();
+    try {
+      const res = await Axios({
+        method: "post",
+        url: "/api/subscription/subscribe",
+        data: { userId: userInfo.id, feed: feed },
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+
+      return true;
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    }
+  }
+);
+
+export const unSubscribeFeed = createAsyncThunk(
+  "subscription/unsubscribe",
+  async (feedId, { rejectWithValue, getState }) => {
+    const {
+      user: { userInfo },
+    } = getState();
+    try {
+      const res = await Axios({
+        method: "post",
+        url: "/api/subscription/subscribe",
+        data: { userId: userInfo.id, id: feedId },
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+
+      return true;
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    }
+  }
+);
+
+export const streamFeed = createAsyncThunk(
+  "subscription/stream",
+  async (_, { rejectWithValue, getState }) => {
+    const {
+      user: { userInfo },
+    } = getState();
+    try {
+      const res = await Axios({
+        method: "post",
+        url: "/api/subscription/stream",
+        data: { userId: userInfo.id },
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+
       return res.data;
     } catch (error) {
       return rejectWithValue(
@@ -47,6 +127,42 @@ const userSlice = createSlice({
       state.subscription = action.payload;
     });
     builder.addCase(getSubscription.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(subscribeFeed.pending, (state) => {
+      state.subscribeLoading = true;
+    });
+    builder.addCase(subscribeFeed.fulfilled, (state, action) => {
+      state.subscribeLoading = false;
+      state.error = null;
+      state.success = action.payload;
+    });
+    builder.addCase(subscribeFeed.rejected, (state, action) => {
+      state.subscribeLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(unSubscribeFeed.pending, (state) => {
+      state.unsubscribeLoading = true;
+    });
+    builder.addCase(unSubscribeFeed.fulfilled, (state, action) => {
+      state.unsubscribeLoading = false;
+      state.error = null;
+      state.success = action.payload;
+    });
+    builder.addCase(unSubscribeFeed.rejected, (state, action) => {
+      state.unsubscribeLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(streamFeed.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(streamFeed.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.stream = action.payload;
+    });
+    builder.addCase(streamFeed.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });

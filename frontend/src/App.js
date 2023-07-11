@@ -13,7 +13,7 @@ import SignInPage from "./page/SignInPage";
 import { signout } from "./slice/userSlice";
 import LoadingBox from "./component/LoadingBox";
 import SourcePage from "./page/SourcePage";
-import FeedPage from "./page/FeedPage";
+import StreamPage from "./page/StreamPage";
 import SubscriptionPage from "./page/SubscriptionPage";
 import PrivateRoute from "./component/PrivateRoute";
 import FeedSearchResultPage from "./page/FeedSearchResultPage";
@@ -22,6 +22,7 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useState("");
+
   const userState = useSelector((state) => state.user);
   const { userInfo, loading, error } = userState;
 
@@ -106,14 +107,14 @@ function App() {
                       </div>
                       <div className="drop-down-content-body">
                         <Link
-                          to="/user/feeds"
+                          to="/user/stream"
                           className="d-flex justify-content-center"
                         >
                           <div className="feeds-icon drop-down-icon">
                             <i className="fa-solid fa-rss fa-2x "></i>
                           </div>
                           <div className="flex-fill">
-                            <span>Feeds</span>
+                            <span>Stream</span>
                           </div>
                         </Link>
                         <Link
@@ -162,7 +163,7 @@ function App() {
           <Container className="d-flex justify-content-center">
             <Nav className="menu-bar">
               <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/user/feeds">Feeds</Nav.Link>
+              <Nav.Link href="/user/stream">Stream</Nav.Link>
               <Nav.Link href="/user/subscription">Subscription</Nav.Link>
               <Nav.Link href="/user/bookmark">Bookmark</Nav.Link>
               <hr className="vr d-none d-sm-block"></hr>
@@ -202,11 +203,11 @@ function App() {
           <Route path="/signin" exact element={<SignInPage />}></Route>
           <Route path="/source/:source" exact element={<SourcePage />}></Route>
           <Route
-            path="/user/feeds"
+            path="/user/stream"
             exact
             element={
               <PrivateRoute>
-                <FeedPage />
+                <StreamPage />
               </PrivateRoute>
             }
           ></Route>

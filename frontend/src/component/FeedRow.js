@@ -52,7 +52,7 @@ export default function FeedRow(props) {
                           feed.id
                         }`}
                       >
-                        <div className="img-sm">
+                        <div className="img-md">
                           <img className="round" src={feed.urltoimage}></img>
                         </div>
                       </Link>

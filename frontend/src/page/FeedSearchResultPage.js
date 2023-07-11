@@ -1,23 +1,56 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
 import { searchFeeds } from "../slice/feedSlice";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import {
+  getSubscription,
+  subscribeFeed,
+  unSubscribeFeed,
+} from "../slice/subSlice";
 
 export default function FeedSearchResultPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const param = useParams();
   const { keyword } = param;
 
-  const subState = useSelector((state) => state.feed);
-  const { feedSearched, loading, error } = subState;
+  const [selectIdx, setSelectIdx] = useState(0);
 
-  const subScribeHandler = () => {};
+  const userState = useSelector((state) => state.user);
+  const { userInfo } = userState;
+
+  const feedState = useSelector((state) => state.feed);
+  const { feedSearched, loading, error } = feedState;
+
+  const subState = useSelector((state) => state.sub);
+  const {
+    subscription,
+    subscribeLoading,
+    unsubscribeLoading,
+    loading: subLoading,
+    success,
+    error: subError,
+  } = subState;
+
+  const subScribeHandler = (feed, idx) => {
+    if (!userInfo) navigate(`/signin?redirect=/feed/search/${keyword}`);
+    else {
+      setSelectIdx(idx);
+      dispatch(subscribeFeed(feed));
+    }
+  };
+
+  const UnSubscribeHandler = (id, idx) => {
+    setSelectIdx(idx);
+    dispatch(unSubscribeFeed(id));
+  };
 
   useEffect(() => {
     dispatch(searchFeeds(keyword));
+    dispatch(getSubscription());
   }, []);
 
   return loading ? (
@@ -43,9 +76,29 @@ export default function FeedSearchResultPage() {
               <div>{feed.description}</div>
             </Col>
             <Col xs="auto">
-              <Button type="button" onClick={subScribeHandler}>
-                Subscribe
-              </Button>
+              {subscription && subscription.find((s) => s.id === feed.id) ? (
+                <Button
+                  type="button"
+                  onClick={() => UnSubscribeHandler(feed.id, idx)}
+                >
+                  {unsubscribeLoading && selectIdx === idx ? (
+                    <i className="fa-solid fa-spinner fa-spin"></i>
+                  ) : (
+                    <span>Unsubscribe</span>
+                  )}
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  onClick={() => subScribeHandler(feed, idx)}
+                >
+                  {subscribeLoading && selectIdx === idx ? (
+                    <i className="fa-solid fa-spinner fa-spin"></i>
+                  ) : (
+                    <span>Subscribe</span>
+                  )}
+                </Button>
+              )}
             </Col>
           </Row>
         ))}

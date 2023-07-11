@@ -120,6 +120,12 @@ newsRouter.post(
       )}`;
       const response = await fetch(url);
       const data = await response.json();
+
+      if (data.errorCode && data.errorCode === 429)
+        return res.status(429).send({
+          message: data.errorMessage,
+        });
+
       if (data.results.length === 0)
         return res.status(401).send({
           message: `Failed to retrieve stream data from source name: ${source}... Please try again or choose a different source to stream`,

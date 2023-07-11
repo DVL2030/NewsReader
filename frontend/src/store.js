@@ -24,6 +24,7 @@ export const store = configureStore({
     news: newsSlice,
     subscription: subSlice,
     feed: feedSlice,
+    sub: subSlice,
   },
   preloadedState: initialState,
 });

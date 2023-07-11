@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signin } from "../slice/userSlice";
 
 import { Col, Container, Row, Button } from "react-bootstrap";
@@ -18,6 +18,10 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { search } = useLocation();
+  const redirectSearch = new URLSearchParams(search).get("redirect");
+  const redirectUrl = redirectSearch ? redirectSearch : "/";
+
   const signinHandler = (e) => {
     e.preventDefault();
     dispatch(signin({ email, password }));
@@ -25,7 +29,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/home");
+      navigate(redirectUrl);
     }
   }, [navigate, userInfo]);
 
@@ -93,7 +97,10 @@ export default function SignInPage() {
                       <small className="text-secondary">
                         Don’t have an account?
                       </small>
-                      <Link className="d-inline-block ms-2" to="/register">
+                      <Link
+                        className="d-inline-block ms-2"
+                        to={`/register?redirect=${redirectUrl}`}
+                      >
                         Sign up
                       </Link>
                     </div>

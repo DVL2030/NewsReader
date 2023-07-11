@@ -183,8 +183,8 @@ div.img-xs {
 }
 
 div.img-sm {
-  width: 10rem;
-  height: 10rem;
+  width: 6rem;
+  height: auto;
 }
 
 img.round {
@@ -372,9 +372,20 @@ form.sign-in > div {
 }
 
 .feeds-search-content {
-  border-left: 0.1rem solid #c0c0c0;
-  border-right: 0.1rem solid #c0c0c0;
+  /* border-left: 0.1rem solid #c0c0c0;
+  border-right: 0.1rem solid #c0c0c0; */
   min-height: 100%;
+}
+
+.sub-list-col {
+  height: 15rem;
+  justify-content: center;
+  align-items: center;
+
+  border: 0.1rem rgb(250, 248, 248) solid;
+  background-color: #cfdaf0;
+  padding: 1rem 0.6rem;
+  border-radius: 1.5rem;
 }
 
 /* =====================================================================================

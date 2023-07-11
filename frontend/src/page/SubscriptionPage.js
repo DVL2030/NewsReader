@@ -21,31 +21,39 @@ export default function SubscriptionPage() {
   ) : error ? (
     <MessageBox variants="danger">{error}</MessageBox>
   ) : subscription && subscription.length > 0 ? (
-    <div>
-      {subscription.map((s, idx) => (
-        <Container>
-          <Row>
-            <Col>
-              <div className="sub-avatar img-sm">
-                <img className="avatar" src={s.visualurl}></img>
-              </div>
-              <div>
-                <span className="sub-title">{s.title}</span>
-              </div>
-              <div>
-                <Button
-                  type="button"
-                  className="delete-sub"
-                  onClick={deleteSubHandler}
-                >
-                  Delete
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      ))}
-    </div>
+    <Container>
+      <Row>
+        {subscription.map((s, idx) => (
+          <Col
+            xs={12}
+            sm={6}
+            md={4}
+            lg={2}
+            key={idx}
+            className="sub-list-col m-4 d-flex flex-column"
+          >
+            <div className="sub-avatar img-sm">
+              <img
+                className="avatar"
+                src={s.visualurl ? s.visualurl : "/imgs/no-image.png"}
+              ></img>
+            </div>
+            <div className="flex-fill">
+              <span className="sub-title">{s.title}</span>
+            </div>
+            <div>
+              <Button
+                type="button"
+                className="delete-sub"
+                onClick={deleteSubHandler}
+              >
+                Delete
+              </Button>
+            </div>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   ) : (
     <Container>
       <Row>
