@@ -195,11 +195,7 @@ function App() {
           <Route path="/home" exact element={<HomePage />} />
           <Route path="/topics/:topic" exact element={<TopicPage />} />
           <Route path="/entry/:id" exact element={<EntryPage />} />
-          <Route
-            path="/topics/:topic/entry/:id"
-            exact
-            element={<EntryPage />}
-          />
+
           <Route path="/signin" exact element={<SignInPage />}></Route>
           <Route path="/source/:source" exact element={<SourcePage />}></Route>
           <Route

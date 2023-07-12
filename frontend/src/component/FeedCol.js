@@ -5,7 +5,7 @@ import { getIcon } from "../utils";
 import { Link } from "react-router-dom";
 
 export default function FeedCol(props) {
-  const { data, topic } = props;
+  const { data } = props;
   return (
     <Container
       className="crd feed-col p-4 m-2"
@@ -20,12 +20,10 @@ export default function FeedCol(props) {
               <Container key={idx}>
                 <Row>
                   <Col xs={8}>
-                    <Card topic={topic} cardData={feed} size="md"></Card>
+                    <Card cardData={feed} size="md"></Card>
                   </Col>
                   <Col xs={4}>
-                    <Link
-                      to={`${topic ? `/topics/${topic}` : ""}/entry/${feed.id}`}
-                    >
+                    <Link to={`/entry/${feed.id}`}>
                       <div className="img-sm">
                         <img className="round" src={feed.urltoimage}></img>
                       </div>

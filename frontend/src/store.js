@@ -10,11 +10,6 @@ const initialState = {
       ? JSON.parse(localStorage.getItem("userInfo"))
       : null,
   },
-  news: {
-    newsHome: localStorage.getItem("newsHome")
-      ? JSON.parse(localStorage.getItem("newsHome"))
-      : null,
-  },
   sub: {
     stream: localStorage.getItem("stream")
       ? JSON.parse(localStorage.getItem("stream"))

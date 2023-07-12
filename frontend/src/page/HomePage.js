@@ -29,7 +29,7 @@ export default function HomePage() {
   const { stream, loading: streamLoading, error: streamError } = subState;
 
   useEffect(() => {
-    if (!newsHome || !newsHome.home) dispatch(getHomePage());
+    if (!newsHome) dispatch(getHomePage());
   }, []);
 
   return loading ? (
@@ -38,7 +38,7 @@ export default function HomePage() {
     <div>
       {error && <MessageBox variants="danger">{error}</MessageBox>}
 
-      {newsHome && newsHome.home && (
+      {newsHome && (
         <Container id="main-container" className="py-5">
           <div className="main-message">
             <h4>Your briefing</h4>
@@ -52,16 +52,10 @@ export default function HomePage() {
                     Top stories <i className="fa fa-angle-right "></i>
                   </Link>
                 </div>
-                <FeedRow
-                  topic="home"
-                  data={newsHome.home.slice(0, 4)}
-                ></FeedRow>
-                <FeedRow
-                  topic="home"
-                  data={newsHome.home.slice(4, 8)}
-                ></FeedRow>
-                <FeedRow topic="home" data={[newsHome.home[8]]}></FeedRow>
-                <FeedRow topic="home" data={[newsHome.home[9]]}></FeedRow>
+                <FeedRow topic="home" data={newsHome.slice(0, 4)}></FeedRow>
+                <FeedRow topic="home" data={newsHome.slice(4, 8)}></FeedRow>
+                <FeedRow topic="home" data={[newsHome[8]]}></FeedRow>
+                <FeedRow topic="home" data={[newsHome[9]]}></FeedRow>
               </div>
             </Col>
             <Col lg={4} className="d-none d-md-block">
@@ -125,7 +119,7 @@ export default function HomePage() {
                     <Col key={x} xs={12} sm={6} md={4}>
                       <FeedCol
                         topic="home"
-                        data={newsHome.home.slice(10 + 3 * (x - 1), 10 + 3 * x)}
+                        data={newsHome.slice(10 + 3 * (x - 1), 10 + 3 * x)}
                       ></FeedCol>
                     </Col>
                   ))}

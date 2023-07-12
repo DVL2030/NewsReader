@@ -1,12 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const newsHome = localStorage.getItem("newsHome")
-  ? JSON.parse(localStorage.getItem("newsHome"))
-  : null;
-
 const initialState = {
-  newsHome,
+  newsHome: null,
   newsSource: null,
   newsEntry: null,
   loading: false,
@@ -18,7 +14,6 @@ export const getHomePage = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await axios.get("/api/news/home");
-      localStorage.setItem("newsHome", JSON.stringify(res.data));
       return res.data;
     } catch (error) {
       return rejectWithValue(
@@ -35,11 +30,7 @@ export const getTopic = createAsyncThunk(
   async (topic, { rejectWithValue }) => {
     try {
       const res = await axios.post("/api/news/topic", { topic: topic });
-      const resData = res.data;
-      const storageData = JSON.parse(localStorage.getItem("newsHome"));
-      const newStorage = { ...storageData, ...resData };
-      localStorage.setItem("newsHome", JSON.stringify(newStorage));
-      return newStorage;
+      return res.data;
     } catch (error) {
       return rejectWithValue(
         error.response && error.response.data.message

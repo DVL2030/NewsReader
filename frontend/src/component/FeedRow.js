@@ -4,7 +4,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import Card from "./Card";
 
 export default function FeedRow(props) {
-  const { data, topic } = props;
+  const { data } = props;
   return (
     <Container
     //   data-aos="fade-up"
@@ -16,18 +16,13 @@ export default function FeedRow(props) {
           <>
             <Col xs={12} md={5}>
               <div className="main-news-card-lg">
-                <Card topic={topic} cardData={data[0]} size="lg"></Card>
+                <Card cardData={data[0]} size="lg"></Card>
               </div>
             </Col>
             <Col xs md={7}>
               <div className="main-news-card-sm">
                 {data.slice(1, data.length).map((feed, idx) => (
-                  <Card
-                    topic={topic}
-                    key={idx}
-                    cardData={feed}
-                    size="md"
-                  ></Card>
+                  <Card key={idx} cardData={feed} size="md"></Card>
                 ))}
               </div>
             </Col>
@@ -39,19 +34,10 @@ export default function FeedRow(props) {
                 <Container key={idx}>
                   <Row>
                     <Col xs={9}>
-                      <Card
-                        topic={topic}
-                        key={idx}
-                        cardData={feed}
-                        size="md"
-                      ></Card>
+                      <Card key={idx} cardData={feed} size="md"></Card>
                     </Col>
                     <Col xs={3}>
-                      <Link
-                        to={`${topic ? `/topics/${topic}` : ""}/entry/${
-                          feed.id
-                        }`}
-                      >
+                      <Link to={`/entry/${feed.id}`}>
                         <div className="img-md">
                           <img className="round" src={feed.urltoimage}></img>
                         </div>

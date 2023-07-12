@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { streamFeed } from "../slice/subSlice";
+import { getSubscription, streamFeed } from "../slice/subSlice";
 import { useNavigate } from "react-router-dom";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
@@ -15,9 +15,12 @@ export default function StreamPage() {
   const { userInfo } = userState;
 
   const subState = useSelector((state) => state.sub);
-  const { stream, loading, error } = subState;
+  const { subscription, stream, loading, error } = subState;
+
+  const filterStream = (idx) => {};
 
   useEffect(() => {
+    dispatch(getSubscription());
     dispatch(streamFeed());
   }, []);
 
@@ -32,13 +35,38 @@ export default function StreamPage() {
         <span className="text-secondary">based on your subscrition</span>
       </div>
       <Row>
-        <Col xs={9}>
+        <Col xs={12} lg={9}>
           <div className="crd p-4">
             {stream.map((s, idx) => (
               <FeedRow key={idx} data={[s]}></FeedRow>
             ))}
           </div>
         </Col>
+        {subscription && (
+          <Col lg={3} className="d-none d-lg-block">
+            <ul className="stream-sub-list no-list-style">
+              <li onClick={filterStream(-1)}>
+                <div className="text-center">
+                  <b>Select All</b>
+                </div>
+              </li>
+              {subscription.map((s, idx) => (
+                <li key={idx} onClick={filterStream(idx)}>
+                  <div className="d-flex gap-4">
+                    <div className="img-xxs">
+                      <img
+                        src={s.visualurl ? s.visualurl : "/imgs/no-image.png"}
+                      ></img>
+                    </div>
+                    <div>
+                      <b>{s.title}</b>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Col>
+        )}
       </Row>
     </Container>
   ) : (

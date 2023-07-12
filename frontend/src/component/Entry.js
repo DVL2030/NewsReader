@@ -6,21 +6,27 @@ import { Link } from "react-router-dom";
 export default function Entry(props) {
   const { entry, type } = props;
 
+  console.log(type);
+
+  const updateDom = (id) => {
+    const e = id.includes("content") ? entry.content : entry.description;
+    if (!e.includes("</")) return;
+    else {
+      const feedlyDiv = document.getElementById(id);
+      if (feedlyDiv && !feedlyDiv.hasChildNodes()) {
+        const dom = parseDOM(e);
+        dom.style.backgroundColor = "inherit";
+        feedlyDiv.appendChild(dom);
+      }
+    }
+  };
+
   useEffect(() => {
     let dom;
 
     if (type === "feedly") {
-      const feedlyDiv = document.getElementById("feedly-content");
-      if (feedlyDiv !== null) {
-        if (entry.content) {
-          dom = parseDOM(entry.content);
-        } else if (entry.description) {
-          if (!entry.description.includes("</")) return;
-          dom = parseDOM(entry.description);
-        }
-        if (!feedlyDiv.hasChildNodes()) feedlyDiv.appendChild(dom);
-        dom.style.backgroundColor = "inherit";
-      }
+      updateDom("feedly-description");
+      updateDom("feedly-content");
     }
   }, []);
 
@@ -31,9 +37,15 @@ export default function Entry(props) {
           <div className="entry-header mb-3">
             <h1>{entry.title}</h1>
           </div>
-          {entry.description && !entry.description.includes("</") && (
+          {entry.description && !entry.description.includes("</") ? (
             <div className="entry-description mb-4">
               <h5 className="text-muted">{entry.description}</h5>
+            </div>
+          ) : (
+            <div className="entry-description mb-4">
+              <div className="text-muted">
+                <h5 id="feedly-description"></h5>
+              </div>
             </div>
           )}
 

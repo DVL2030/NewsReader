@@ -55,10 +55,9 @@ export default function FeedSearchResultPage() {
 
   return loading ? (
     <LoadingBox />
-  ) : error ? (
-    <MessageBox variants="danger">{error}</MessageBox>
   ) : (
     <Container>
+      {error && <MessageBox variants="danger">{error}</MessageBox>}
       {feedSearched &&
         feedSearched.map((feed, idx) => (
           <Row key={idx} className="feeds-search-container">

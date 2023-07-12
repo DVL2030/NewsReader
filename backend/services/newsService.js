@@ -5,12 +5,16 @@ export const getAllNews = async () => {
   return data;
 };
 
+export const getNewsEntry = async (id) => {
+  let data;
+  const result = await query("SELECT * FROM news WHERE id=$1;", [id]);
+  if (result.length > 0) data = result[0];
+  return data;
+};
+
 export const getTopicNews = async (topic) => {
   const data = await query("SELECT * FROM news WHERE topic=$1;", [topic]);
-  const json = {};
-  json[topic] = data;
-
-  return json;
+  return data;
 };
 
 export const insertNews = async (news, topic) => {

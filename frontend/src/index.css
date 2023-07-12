@@ -177,6 +177,11 @@ img {
   margin: auto;
 }
 
+div.img-xxs {
+  width: 2rem;
+  height: auto;
+}
+
 div.img-xs {
   width: 5rem;
   height: auto;
@@ -227,6 +232,23 @@ ul.no-list-style {
   padding: 0;
 }
 
+ul.stream-sub-list {
+  background-color: white;
+  border-radius: 1.5rem;
+  padding: 1rem;
+}
+
+ul.stream-sub-list li {
+  background-color: var(--main-theme-lightblue);
+  border: 0.1rem rgb(250, 248, 248) solid;
+  border-radius: 0.4rem;
+  padding: 0.6rem;
+}
+
+ul.stream-sub-list li:hover {
+  cursor: pointer;
+}
+
 /* ==========================================
    Font
    ==========================================*/
@@ -263,7 +285,8 @@ button {
 }
 
 button:hover,
-select:hover {
+select:hover,
+ul.stream-sub-list li:hover {
   -webkit-filter: brightness(90%);
   -moz-filter: brightness(90%);
   -o-filter: brightness(90%);
@@ -318,6 +341,15 @@ form.sign-in > div {
   /* max-width: 30rem;
   min-width: 30rem; */
   /* min-height: 50rem; */
+}
+
+.bookmark-icon-container {
+  vertical-align: middle;
+  padding-left: 1rem;
+}
+
+.bookmark-icon-container:hover {
+  cursor: pointer;
 }
 
 .box {
@@ -402,7 +434,7 @@ div.container {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .crd small {
-    font-size: 0.2rem;
+    font-size: 0.5rem;
   }
   .crd h5,
   .crd span {
@@ -414,7 +446,7 @@ div.container {
 @media only screen and (min-width: 600px) {
   .crd small,
   .crd span {
-    font-size: 0.2rem;
+    font-size: 0.4rem;
   }
   .crd h5 {
     font-size: 0.7rem;

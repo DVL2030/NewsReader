@@ -11,30 +11,24 @@ export default function EntryPage() {
   const param = useParams();
   const dispatch = useDispatch();
 
-  const { id, topic } = param;
+  const { id } = param;
 
   const newsState = useSelector((state) => state.news);
-  const { newsEntry, newsHome, loading, error } = newsState;
-
-  const [data, setData] = useState(null);
+  const { newsEntry, loading, error } = newsState;
 
   useEffect(() => {
-    if (topic) {
-      const entry = newsHome[topic].find((x) => x.id == id);
-      setData(entry);
-    } else {
-      dispatch(getEntry(id));
-    }
+    dispatch(getEntry(id));
   }, []);
 
   return loading ? (
     <LoadingBox />
   ) : (
     <div>
-      {data ? (
-        <Entry entry={data} type="home"></Entry>
-      ) : newsEntry ? (
-        <Entry entry={newsEntry} type="feedly"></Entry>
+      {newsEntry ? (
+        <Entry
+          entry={newsEntry}
+          type={newsEntry.content.includes("chars]") ? "home" : "feedly"}
+        ></Entry>
       ) : error ? (
         <MessageBox variants="danger">{error}</MessageBox>
       ) : (

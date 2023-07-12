@@ -28,7 +28,7 @@ export default function TopicPage() {
   ) : (
     <div>
       {error && <MessageBox variants="danger">{error}</MessageBox>}
-      {newsHome && newsHome[topic] && (
+      {newsHome && (
         <Container id="topic-container" className="py-5">
           <div className="main-message">
             <h4>{topic}</h4>
@@ -40,7 +40,7 @@ export default function TopicPage() {
                   <FeedRow
                     key={x}
                     topic={topic}
-                    data={newsHome[topic].slice(4 * (x - 1), 4 * x)}
+                    data={newsHome.slice(4 * (x - 1), 4 * x)}
                   ></FeedRow>
                 ))}
               </div>

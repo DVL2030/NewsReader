@@ -3,7 +3,6 @@ import expressAsyncHandler from "express-async-handler";
 
 import { isAuth } from "../middleware/auth.js";
 import { query } from "../db/db.js";
-import { fetchWithRandAgent } from "../utils.js";
 
 const bookmarkRouter = express.Router();
 
@@ -12,16 +11,34 @@ bookmarkRouter.post(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const { userId } = req.body;
-    const collector = [];
     try {
       const result = await query(
-        "SELECT entries FROM subscription WHERE userid=$1",
+        "SELECT entries FROM bookmark WHERE userid=$1",
+        [userId]
+      );
+      return res.send(result);
+    } catch (error) {
+      return res.status(401).send({
+        message: error.message,
+      });
+    }
+  })
+);
+
+bookmarkRouter.post(
+  "/add",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const { userId } = req.body;
+    const collector = [];
+    try {
+      await query("INSERT INTO news ");
+      const result = await query(
+        "INSERT INTO entries FROM bookmark WHERE userid=$1",
         [userId]
       );
 
-      const feeds = result[0].feeds;
-
-      if (feeds.length > 0) {
+      if (entries.length > 0) {
         await Promise.all(
           feeds.map(async (feed) => {
             const data = await query("SELECT * FROM feed WHERE id=$1", [feed]);
@@ -50,7 +67,7 @@ bookmarkRouter.post(
 );
 
 bookmarkRouter.post(
-  "/add",
+  "/remove",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const { userId, feed } = req.body;
