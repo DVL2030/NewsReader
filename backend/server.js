@@ -6,6 +6,7 @@ import newsRouter from "./routers/newsRouter.js";
 import userRouter from "./routers/userRouter.js";
 import subRouter from "./routers/subRouter.js";
 import feedsRouter from "./routers/feedsRouter.js";
+import bookmarkRouter from "./routers/bookmarkRouter.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use("/api/users", userRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/subscription", subRouter);
 app.use("/api/feeds", feedsRouter);
+app.use("/api/bookmark", bookmarkRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

@@ -28,7 +28,7 @@ export const subscribe = async (userId, feed) => {
       feed.id,
       feed.title,
       feed.visualurl,
-      feed.website,
+      feed.website || feed.url,
       feed.description,
       feed.updated,
     ]

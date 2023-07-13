@@ -17,6 +17,7 @@ import StreamPage from "./page/StreamPage";
 import SubscriptionPage from "./page/SubscriptionPage";
 import PrivateRoute from "./component/PrivateRoute";
 import FeedSearchResultPage from "./page/FeedSearchResultPage";
+import BookmarkPage from "./page/BookmarkPage";
 
 function App() {
   const navigate = useNavigate();
@@ -213,6 +214,15 @@ function App() {
             element={
               <PrivateRoute>
                 <SubscriptionPage />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/user/bookmark"
+            exact
+            element={
+              <PrivateRoute>
+                <BookmarkPage />
               </PrivateRoute>
             }
           ></Route>

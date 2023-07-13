@@ -52,10 +52,10 @@ export default function HomePage() {
                     Top stories <i className="fa fa-angle-right "></i>
                   </Link>
                 </div>
-                <FeedRow topic="home" data={newsHome.slice(0, 4)}></FeedRow>
-                <FeedRow topic="home" data={newsHome.slice(4, 8)}></FeedRow>
-                <FeedRow topic="home" data={[newsHome[8]]}></FeedRow>
-                <FeedRow topic="home" data={[newsHome[9]]}></FeedRow>
+                <FeedRow data={newsHome.slice(0, 4)}></FeedRow>
+                <FeedRow data={newsHome.slice(4, 8)}></FeedRow>
+                <FeedRow data={[newsHome[8]]}></FeedRow>
+                <FeedRow data={[newsHome[9]]}></FeedRow>
               </div>
             </Col>
             <Col lg={4} className="d-none d-md-block">
@@ -118,7 +118,6 @@ export default function HomePage() {
                   {[...Array(Number(6)).keys()].map((x) => (
                     <Col key={x} xs={12} sm={6} md={4}>
                       <FeedCol
-                        topic="home"
                         data={newsHome.slice(10 + 3 * (x - 1), 10 + 3 * x)}
                       ></FeedCol>
                     </Col>

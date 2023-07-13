@@ -21,14 +21,19 @@ export const insertNews = async (news, topic) => {
   const q =
     "INSERT INTO news(source, author, title, description, url, urlToImage, publishedAt, content, topic) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)";
   await query(q, [
-    news.source.name,
+    news.source.name || news.source,
     news.author,
     news.title,
     news.description,
     news.url,
-    news.urlToImage,
-    news.publishedAt,
+    news.urlToImage || news.urltoimage,
+    news.publishedAt || news.publishedat,
     news.content,
     topic,
   ]);
+};
+
+export const removeNews = async (id) => {
+  const q = "DELETE FROM news WHERE id=$1";
+  await query(q, [id]);
 };

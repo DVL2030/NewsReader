@@ -3,7 +3,6 @@ import expressAsyncHandler from "express-async-handler";
 
 import { isAuth } from "../middleware/auth.js";
 import { query } from "../db/db.js";
-import { fetchWithRandAgent } from "../utils.js";
 import { getSub, subscribe, unsubscribe } from "../services/subService.js";
 import { getStream } from "../services/feedlyService.js";
 

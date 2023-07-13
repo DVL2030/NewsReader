@@ -6,11 +6,7 @@ import Card from "./Card";
 export default function FeedRow(props) {
   const { data } = props;
   return (
-    <Container
-    //   data-aos="fade-up"
-    //   data-aos-duration="1000"
-    //   data-aos-anchor-placement="top-bottom"
-    >
+    <Container>
       <Row>
         {data.length > 1 ? (
           <>

@@ -1,12 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { calcTimeDiff, extractURLParam, getIcon, parseDOM } from "../utils";
 import { Link } from "react-router-dom";
+import {
+  addToBookmark,
+  getBookmark,
+  removeFromBookmark,
+} from "../slice/bookmarkSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Entry(props) {
-  const { entry, type } = props;
+  const { entry, type, bookmarked } = props;
 
-  console.log(type);
+  const dispatch = useDispatch();
+
+  const bookmarkState = useSelector((state) => state.bookmark);
+  const { loadingAdd, loadingRemove } = bookmarkState;
 
   const updateDom = (id) => {
     const e = id.includes("content") ? entry.content : entry.description;
@@ -21,8 +30,19 @@ export default function Entry(props) {
     }
   };
 
+  const bookmarkHandler = (e) => {
+    e.preventDefault();
+
+    if (loadingAdd || loadingRemove) return;
+    if (!bookmarked) {
+      dispatch(addToBookmark(entry));
+    } else {
+      dispatch(removeFromBookmark(entry.id));
+    }
+  };
+
   useEffect(() => {
-    let dom;
+    dispatch(getBookmark());
 
     if (type === "feedly") {
       updateDom("feedly-description");
@@ -63,6 +83,18 @@ export default function Entry(props) {
                 <span className="text-secondary">
                   {calcTimeDiff(entry.publishedat)}
                 </span>
+                <div
+                  className="d-inline-block"
+                  onClick={(e) => bookmarkHandler(e)}
+                >
+                  <span className="bookmark-icon-container">
+                    <i
+                      className={`${
+                        bookmarked ? "fa-solid" : "fa-regular"
+                      } fa-heart fa-lg`}
+                    ></i>
+                  </span>
+                </div>
               </div>
             </div>
             <div className="entry-info-right ">

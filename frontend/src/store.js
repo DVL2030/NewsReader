@@ -3,6 +3,7 @@ import newsSlice from "./slice/newsSlice";
 import userSlice from "./slice/userSlice";
 import subSlice from "./slice/subSlice";
 import feedSlice from "./slice/feedSlice";
+import bookmarkSlice from "./slice/bookmarkSlice";
 
 const initialState = {
   user: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     subscription: subSlice,
     feed: feedSlice,
     sub: subSlice,
+    bookmark: bookmarkSlice,
   },
   preloadedState: initialState,
 });

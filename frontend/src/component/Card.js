@@ -1,22 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { calcTimeDiff, getIcon } from "../utils";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Card(props) {
   const dispatch = useDispatch();
+
   const { cardData, size } = props;
-
-  const [heart, setHeart] = useState("unheart");
-
-  const bookmarkHandler = (id) => {
-    if (heart === "unheart") {
-      setHeart("heart");
-      // dispatch(addToBookmark);
-    } else if (heart === "heart") {
-      setHeart("unheart");
-    }
-  };
 
   return (
     <div className="crd border-none">
@@ -58,18 +48,6 @@ export default function Card(props) {
         <small className="text-secondary">
           {calcTimeDiff(cardData.publishedat)}
         </small>
-        <div
-          className="d-inline-block"
-          onClick={() => bookmarkHandler(cardData.id)}
-        >
-          <span className="bookmark-icon-container">
-            <i
-              className={`${
-                heart === "heart" ? "fa-solid" : "fa-regular"
-              } fa-heart`}
-            ></i>
-          </span>
-        </div>
       </div>
     </div>
   );
