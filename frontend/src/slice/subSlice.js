@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import Axios from "axios";
 
-const stream = localStorage.getItem("stream")
-  ? JSON.parse(localStorage.getItem("stream"))
+const stream = sessionStorage.getItem("stream")
+  ? JSON.parse(sessionStorage.getItem("stream"))
   : null;
 
 const initialState = {
@@ -104,7 +104,7 @@ export const streamFeed = createAsyncThunk(
         data: { userId: userInfo.id },
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
-      localStorage.setItem("stream", JSON.stringify(res.data));
+      sessionStorage.setItem("stream", JSON.stringify(res.data));
       return res.data;
     } catch (error) {
       return rejectWithValue(

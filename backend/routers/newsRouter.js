@@ -101,7 +101,7 @@ newsRouter.post(
         const result = getStream(feedId, 80);
         return res.status(201).send(result);
       }
-      const data = searchFeed(source);
+      const data = await searchFeed(source);
 
       if (data.length === 0)
         return res.status(401).send({

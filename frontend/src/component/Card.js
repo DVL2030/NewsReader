@@ -38,7 +38,7 @@ export default function Card(props) {
         <Link to={`/entry/${cardData.id}`} className="text-secondary">
           <h5>
             {size == "lg" || size == "md"
-              ? `${cardData.title.substring(0, 150)}...`
+              ? `${cardData.title.substring(0, 100)}...`
               : cardData.title}
           </h5>
         </Link>

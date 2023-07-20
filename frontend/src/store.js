@@ -7,13 +7,13 @@ import bookmarkSlice from "./slice/bookmarkSlice";
 
 const initialState = {
   user: {
-    userInfo: localStorage.getItem("userInfo")
-      ? JSON.parse(localStorage.getItem("userInfo"))
+    userInfo: sessionStorage.getItem("userInfo")
+      ? JSON.parse(sessionStorage.getItem("userInfo"))
       : null,
   },
   sub: {
-    stream: localStorage.getItem("stream")
-      ? JSON.parse(localStorage.getItem("stream"))
+    stream: sessionStorage.getItem("stream")
+      ? JSON.parse(sessionStorage.getItem("stream"))
       : null,
   },
 };

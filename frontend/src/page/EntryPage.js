@@ -8,7 +8,7 @@ import Entry from "../component/Entry";
 import { getEntry } from "../slice/newsSlice";
 import { getBookmark } from "../slice/bookmarkSlice";
 
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function EntryPage() {
@@ -26,30 +26,16 @@ export default function EntryPage() {
     bookmark,
     loadingAdd,
     loadingRemove,
-    successAdd,
-    successRemove,
+
     loading: bookmarkLoading,
   } = bookmarkState;
 
   useEffect(() => {
     dispatch(getBookmark());
+    toast.success("Added!", {
+      autoClose: 1000,
+    });
     dispatch(getEntry(id));
-    // if (!loadingAdd || !loadingRemove) {
-    //   if (successAdd) {
-    //     toastId.current = toast.success("Added!", {
-    //       autoClose: 1000,
-    //       position: toast.POSITION.TOP_CENTER,
-    //     });
-    //   } else if (successRemove) {
-    //     toastId.current = toast.success("Removed!", {
-    //       autoClose: 1000,
-    //       position: toast.POSITION.TOP_CENTER,
-    //     });
-    //   } else if (error)
-    //     toastId.current = toast.error(error, {
-    //       autoClose: 1000,
-    //     });
-    // }
   }, [loadingAdd, loadingRemove]);
 
   return loading ? (
@@ -59,12 +45,12 @@ export default function EntryPage() {
       {newsEntry ? (
         <Entry
           entry={newsEntry}
-          type={newsEntry.content.includes("chars]") ? "home" : "feedly"}
           bookmarked={
             bookmark && bookmark.find((b) => Number(b) === newsEntry.id)
               ? true
               : false
           }
+          feedly={String(newsEntry.id).includes(":")}
         ></Entry>
       ) : error ? (
         <MessageBox variants="danger">{error}</MessageBox>

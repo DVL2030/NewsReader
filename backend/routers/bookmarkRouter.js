@@ -38,7 +38,7 @@ bookmarkRouter.post(
     try {
       let entries;
       const result = await query(
-        "SELECT entries FROM bookmark WHERE userid=$1",
+        "SELECT * FROM bookmark bm INNER JOIN bmark_entries be ON be.id = ANY(bm.entries) WHERE userid=$1",
         [userId]
       );
       if (result.length > 0) entries = result[0].entries;
