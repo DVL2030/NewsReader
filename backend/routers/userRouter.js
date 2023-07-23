@@ -53,7 +53,7 @@ userRouter.post(
           id: user.id,
           name: user.name,
           email: user.email,
-          isAdmin: user.isAdmin,
+          isAdmin: user.isadmin,
           token: generateToken(user),
         });
       } else {

@@ -3,6 +3,7 @@
   --main-anchor-dark: rgb(88, 88, 88);
   --main-anchor-blue: #1d75e9;
   --main-theme-lightblue: #f6f8fc;
+  --main-theme-lightgrey: #fbfbfb;
 }
 
 html {
@@ -371,6 +372,13 @@ form.sign-in > div {
   font-size: 1.2rem;
 }
 
+.stat-card {
+  background-color: var(--main-theme-lightgrey);
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+}
+
 /* =====================================================================================
    Page CSS
    ===================================================================================== */
@@ -421,6 +429,22 @@ form.sign-in > div {
   background-color: #cfdaf0;
   padding: 1rem 0.6rem;
   border-radius: 1.5rem;
+}
+
+.teal {
+  color: #3fb7ad;
+}
+
+.orange {
+  color: #e6742f;
+}
+
+.green {
+  color: #00bc72;
+}
+
+.blue {
+  color: #43bffb;
 }
 
 /* =====================================================================================

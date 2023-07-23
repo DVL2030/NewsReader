@@ -81,7 +81,6 @@ newsRouter.post(
     const { topic } = req.body;
     try {
       const data = await getTopicNews(topic);
-      console.log(data);
       return res.status(201).send(data);
     } catch (error) {
       return res.status(401).send({

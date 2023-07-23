@@ -5,7 +5,6 @@ export const getSub = async (userId) => {
     "SELECT * FROM subscription s INNER JOIN feed f ON f.id = ANY(s.feeds) WHERE userid=$1",
     [userId]
   );
-
   return result;
 };
 

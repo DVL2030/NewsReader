@@ -11,6 +11,7 @@ import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
 import FeedRow from "../component/FeedRow";
 import FeedCol from "../component/FeedCol";
+import { streamFeed } from "../slice/subSlice";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!newsHome) dispatch(getHomePage());
+    if (!stream) dispatch(streamFeed());
   }, []);
 
   return loading ? (

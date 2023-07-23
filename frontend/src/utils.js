@@ -43,3 +43,40 @@ export const parseDOM = (htmlToConvert) => {
   const html = parser.parseFromString(htmlToConvert, "text/html");
   return html.body;
 };
+
+export const CHART_COLORS = {
+  red: "rgb(255, 99, 132)",
+  orange: "rgb(255, 159, 64)",
+  yellow: "rgb(255, 205, 86)",
+  green: "rgb(75, 192, 192)",
+  blue: "rgb(54, 162, 235)",
+  purple: "rgb(153, 102, 255)",
+  grey: "rgb(201, 203, 207)",
+};
+
+export const createChart = (el, type, data, options) => {};
+
+export const renderDashboard = () => {
+  // 대쉬보드 차트 설정
+  const dashboard = document.getElementById("dashboard").getContext("2d");
+  const chart_options = {
+    responsive: true,
+    chart: {
+      title: "Total Visits",
+    },
+  };
+  const data = {
+    labels: ["Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    datasets: [
+      {
+        label: "Website Visits",
+        data: [182, 103, 200, 145, 155, 204],
+        fill: false,
+        borderColor: "#0B2948",
+        tension: 0.1,
+      },
+    ],
+  };
+
+  return { dashboard, type: "line", data, chart_options };
+};

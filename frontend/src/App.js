@@ -19,6 +19,10 @@ import PrivateRoute from "./component/PrivateRoute";
 import FeedSearchResultPage from "./page/FeedSearchResultPage";
 import BookmarkPage from "./page/BookmarkPage";
 import RegisterPage from "./page/RegisterPage";
+import AdminRoute from "./component/AdminRoute";
+import AdminDashBoardPage from "./page/Admin/AdminDashboardPage";
+import AdminManageNewsPage from "./page/Admin/AdminManageNewsPage";
+import AdminManageUsersPage from "./page/Admin/AdminManageUsersPage";
 
 function App() {
   const navigate = useNavigate();
@@ -139,6 +143,46 @@ function App() {
                           </div>
                         </Link>
                       </div>
+                      {userInfo.isAdmin && (
+                        <div className="drop-down-content-body">
+                          <hr></hr>
+                          <Link
+                            to="/admin/dashboard"
+                            className="d-flex justify-content-center"
+                          >
+                            <div className="bookmark-icon drop-down-icon">
+                              <i className="fa-solid fa-house fa-2x"></i>
+                            </div>
+                            <div className="flex-fill">
+                              <span>Dashboard</span>
+                            </div>
+                          </Link>
+                          <Link
+                            to="/admin/news"
+                            className="d-flex justify-content-center"
+                          >
+                            <div className="bookmark-icon drop-down-icon">
+                              <i className="fa-regular fa-newspaper fa-2x"></i>
+                            </div>
+                            <div className="flex-fill">
+                              <span>Manage News</span>
+                            </div>
+                          </Link>
+                          <Link
+                            to="/admin/users"
+                            className="d-flex justify-content-center"
+                          >
+                            <div className="bookmark-icon drop-down-icon">
+                              <i className="fa-solid fa-users fa-2x"></i>
+                            </div>
+                            <div className="flex-fill">
+                              <span>Manage Users</span>
+                            </div>
+                          </Link>
+                          <hr></hr>
+                        </div>
+                      )}
+
                       <div
                         to="/user/bookmark"
                         className="d-flex justify-content-center drop-down-content-footer"
@@ -201,6 +245,33 @@ function App() {
           <Route path="/signin" exact element={<SignInPage />}></Route>
           <Route path="/register" exact element={<RegisterPage />}></Route>
           <Route path="/source/:source" exact element={<SourcePage />}></Route>
+          <Route
+            path="/admin/dashboard"
+            exact
+            element={
+              <AdminRoute>
+                <AdminDashBoardPage />
+              </AdminRoute>
+            }
+          ></Route>
+          <Route
+            path="/admin/news"
+            exact
+            element={
+              <AdminRoute>
+                <AdminManageNewsPage />
+              </AdminRoute>
+            }
+          ></Route>
+          <Route
+            path="/admin/users"
+            exact
+            element={
+              <AdminRoute>
+                <AdminManageUsersPage />
+              </AdminRoute>
+            }
+          ></Route>
           <Route
             path="/user/stream"
             exact
