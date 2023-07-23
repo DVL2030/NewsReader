@@ -19,10 +19,10 @@ export default function MessageBox(props) {
           <strong>
             {props.variants === "danger"
               ? "There was a problem..."
-              : props.variants === "success" && "Success !"}
+              : props.variants === "success" && "Success ! "}
           </strong>
-        </big>
-        <span className={props.variants}>{props.children}</span>
+        </big>{" "}
+        <span className={props.variants}> {props.children}</span>
       </div>
     </div>
   );

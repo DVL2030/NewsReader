@@ -30,8 +30,8 @@ export default function FeedSearchResultPage() {
     subscription,
     subscribeLoading,
     unsubscribeLoading,
-    loading: subLoading,
-    success,
+    unsubSuccess,
+    subSuccess,
     error: subError,
   } = subState;
 
@@ -51,13 +51,31 @@ export default function FeedSearchResultPage() {
   useEffect(() => {
     dispatch(searchFeeds(keyword));
     dispatch(getSubscription());
-  }, []);
+  }, [
+    subSuccess,
+    unsubSuccess,
+    subscribeLoading,
+    unsubscribeLoading,
+    subError,
+  ]);
 
   return loading ? (
     <LoadingBox />
   ) : (
     <Container>
       {error && <MessageBox variants="danger">{error}</MessageBox>}
+      {subSuccess ? (
+        <MessageBox variants="success">
+          You have successfully subscribed
+        </MessageBox>
+      ) : unsubSuccess ? (
+        <MessageBox variants="success">
+          You have successfully unsubscribed
+        </MessageBox>
+      ) : (
+        <></>
+      )}
+
       {feedSearched &&
         feedSearched.map((feed, idx) => (
           <Row key={idx} className="feeds-search-container">

@@ -3,7 +3,6 @@ import expressAsyncHandler from "express-async-handler";
 
 import { isAuth } from "../middleware/auth.js";
 import { query } from "../db/db.js";
-import { insertNews } from "../services/newsService.js";
 import { deleteBookmark, insertBookmark } from "../services/bookmarkService.js";
 
 const bookmarkRouter = express.Router();
@@ -36,27 +35,11 @@ bookmarkRouter.post(
   expressAsyncHandler(async (req, res) => {
     const { userId } = req.body;
     try {
-      let entries;
       const result = await query(
         "SELECT * FROM bookmark bm INNER JOIN bmark_entries be ON be.id = ANY(bm.entries) WHERE userid=$1",
         [userId]
       );
-      if (result.length > 0) entries = result[0].entries;
-      else return res.status(201).send([]);
-
-      const collector = [];
-      await Promise.all(
-        entries.map(async (e) => {
-          const data = await query("SELECT * FROM bmark_entries WHERE id=$1", [
-            e,
-          ]);
-          if (data[0]) {
-            collector.push(data[0]);
-          }
-        })
-      );
-
-      return res.status(201).send(collector);
+      return res.status(201).send(result);
     } catch (error) {
       return res.status(401).send({
         message: error.message,
@@ -88,7 +71,7 @@ bookmarkRouter.post(
     const { userId, id } = req.body;
     try {
       await deleteBookmark(userId, id);
-      return res.status(201).send({ success: true });
+      return res.status(201).send(true);
     } catch (error) {
       return res.status(401).send({
         message: error.message,

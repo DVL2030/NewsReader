@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSubscription, streamFeed } from "../slice/subSlice";
 import { useNavigate } from "react-router-dom";
@@ -17,18 +17,26 @@ export default function StreamPage() {
   const subState = useSelector((state) => state.sub);
   const { subscription, stream, loading, error } = subState;
 
-  const filterStream = (idx) => {};
+  const [data, setData] = useState();
+
+  const filterStream = (source) => {
+    if (source === "all") setData(stream);
+    else {
+      const filtered = stream.filter((s) => s.source === source);
+      setData(filtered);
+    }
+  };
 
   useEffect(() => {
-    dispatch(getSubscription());
-    dispatch(streamFeed());
-  }, []);
+    if (!subscription) dispatch(getSubscription());
+    if (!stream) dispatch(streamFeed());
+  }, [data]);
 
   return loading ? (
     <LoadingBox />
   ) : error ? (
     <MessageBox variants="danger">{error}</MessageBox>
-  ) : stream && stream.length > 0 ? (
+  ) : data && data.length > 0 ? (
     <Container>
       <div className="main-message">
         <h4>Your Streaming</h4>
@@ -37,7 +45,7 @@ export default function StreamPage() {
       <Row>
         <Col xs={12} lg={9}>
           <div className="crd p-4">
-            {stream.map((s, idx) => (
+            {data.map((s, idx) => (
               <FeedRow key={idx} data={[s]}></FeedRow>
             ))}
           </div>
@@ -45,13 +53,13 @@ export default function StreamPage() {
         {subscription && (
           <Col lg={3} className="d-none d-lg-block">
             <ul className="stream-sub-list no-list-style">
-              <li onClick={filterStream(-1)}>
+              <li onClick={() => filterStream("all")}>
                 <div className="text-center">
                   <b>Select All</b>
                 </div>
               </li>
               {subscription.map((s, idx) => (
-                <li key={idx} onClick={filterStream(idx)}>
+                <li key={idx} onClick={() => filterStream(s.title)}>
                   <div className="d-flex gap-4">
                     <div className="img-xxs">
                       <img

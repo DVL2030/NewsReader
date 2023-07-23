@@ -12,25 +12,18 @@ import {
 export default function SubscriptionPage() {
   const dispatch = useDispatch();
   const subState = useSelector((state) => state.subscription);
-  const { subscription, loading, error, success, subLoading } = subState;
-  const [subIdx, setSubIdx] = useState(-1);
-  const [subType, setSubType] = useState("unsub");
+  const { subscription, loading, error, unsubSuccess, subSuccess } = subState;
 
-  const subHandler = (val, id, idx) => {
-    if (val === "sub") {
-      setSubType("sub");
-      setSubIdx(idx);
-      dispatch(subscribeFeed(id));
-    } else if (val === "unsub") {
-      setSubType("unsub");
-      setSubIdx(idx);
-      dispatch(unSubscribeFeed(id));
-    }
+  const unsubHandler = (e, id) => {
+    e.preventDefault();
+
+    dispatch(unSubscribeFeed(id));
+    dispatch(getSubscription());
   };
 
   useEffect(() => {
     dispatch(getSubscription());
-  }, []);
+  }, [unsubSuccess, subSuccess]);
 
   return loading ? (
     <LoadingBox />
@@ -38,16 +31,16 @@ export default function SubscriptionPage() {
     <MessageBox variants="danger">{error}</MessageBox>
   ) : subscription && subscription.length > 0 ? (
     <Container>
-      {success && (
+      {subSuccess ? (
         <MessageBox variants="success">
-          {subType === "sub" ? (
-            <span> You have successfully subscribed.</span>
-          ) : (
-            subType === "unsub" && (
-              <span> You have successfully unsubscribed.</span>
-            )
-          )}
+          <span> You have successfully subscribed.</span>
         </MessageBox>
+      ) : unsubSuccess ? (
+        <MessageBox variants="success">
+          <span> You have successfully unsubscribed.</span>
+        </MessageBox>
+      ) : (
+        <></>
       )}
       <Row>
         {subscription.map((s, idx) => (
@@ -65,7 +58,7 @@ export default function SubscriptionPage() {
                 src={s.visualurl ? s.visualurl : "/imgs/no-image.png"}
               ></img>
             </div>
-            <div className="flex-fill">
+            <div className="flex-fill text-center">
               <span className="sub-title">{s.title}</span>
             </div>
             <div>
@@ -74,16 +67,9 @@ export default function SubscriptionPage() {
                 value={
                   subscription.find((sc) => sc.id === s.id) ? "unsub" : "sub"
                 }
-                onClick={(e) => subHandler(e.target.value, s.id, idx)}
+                onClick={(e) => unsubHandler(e, s.id, idx)}
               >
-                {subLoading && subIdx === idx ? (
-                  <i className="fa-solid fa-spinner fa-spin"></i>
-                ) : !subscription.find((sc) => sc.id === s.id) &&
-                  subIdx === idx ? (
-                  "Subscribe"
-                ) : (
-                  "Unsubscribe"
-                )}
+                Unsubscribe
               </Button>
             </div>
           </Col>

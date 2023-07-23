@@ -145,6 +145,7 @@ const bookmarkSlice = createSlice({
       state.loadingAdd = false;
       state.error = null;
       state.successAdd = action.payload;
+      state.successRemove = false;
     });
     builder.addCase(addToBookmark.rejected, (state, action) => {
       state.loadingAdd = false;
@@ -157,6 +158,7 @@ const bookmarkSlice = createSlice({
       state.loadingRemove = false;
       state.error = null;
       state.successRemove = action.payload;
+      state.successAdd = false;
     });
     builder.addCase(removeFromBookmark.rejected, (state, action) => {
       state.loadingRemove = false;

@@ -11,7 +11,10 @@ const initialState = {
   subLoading: false,
   stream,
   loading: false,
-  success: false,
+  subSuccess: false,
+  subscribeLoading: false,
+  unsubSuccess: false,
+  unsubscribeLoading: false,
   error: null,
 };
 
@@ -134,29 +137,27 @@ const userSlice = createSlice({
       state.error = action.payload;
     });
     builder.addCase(subscribeFeed.pending, (state) => {
-      state.subLoading = true;
-      state.success = false;
+      state.subscribeLoading = true;
     });
     builder.addCase(subscribeFeed.fulfilled, (state, action) => {
-      state.subLoading = false;
+      state.subscribeLoading = false;
       state.error = null;
-      state.success = action.payload;
+      state.subSuccess = action.payload;
     });
     builder.addCase(subscribeFeed.rejected, (state, action) => {
-      state.subLoading = false;
+      state.subscribeLoading = false;
       state.error = action.payload;
     });
     builder.addCase(unSubscribeFeed.pending, (state) => {
-      state.subLoading = true;
-      state.success = false;
+      state.unsubscribeLoading = true;
     });
     builder.addCase(unSubscribeFeed.fulfilled, (state, action) => {
-      state.subLoading = false;
+      state.unsubscribeLoading = false;
       state.error = null;
-      state.success = action.payload;
+      state.unsubSuccess = action.payload;
     });
     builder.addCase(unSubscribeFeed.rejected, (state, action) => {
-      state.subLoading = false;
+      state.unsubscribeLoading = false;
       state.error = action.payload;
     });
     builder.addCase(streamFeed.pending, (state) => {

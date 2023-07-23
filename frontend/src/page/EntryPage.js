@@ -26,22 +26,32 @@ export default function EntryPage() {
     bookmark,
     loadingAdd,
     loadingRemove,
-
+    successAdd,
+    successRemove,
     loading: bookmarkLoading,
   } = bookmarkState;
 
   useEffect(() => {
     dispatch(getBookmark());
-    toast.success("Added!", {
-      autoClose: 1000,
-    });
     dispatch(getEntry(id));
-  }, [loadingAdd, loadingRemove]);
+  }, [successAdd, successRemove]);
 
   return loading ? (
     <LoadingBox />
   ) : (
     <div>
+      {successAdd ? (
+        <MessageBox variants="success">
+          Successfully added to your bookmark!
+        </MessageBox>
+      ) : successRemove ? (
+        <MessageBox variants="success">
+          Successfully removed from your bookmark!
+        </MessageBox>
+      ) : (
+        <></>
+      )}
+
       {newsEntry ? (
         <Entry
           entry={newsEntry}

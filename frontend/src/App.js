@@ -67,7 +67,7 @@ function App() {
               </button>
               <Form.Control
                 type="search"
-                placeholder="Search"
+                placeholder="Search feed to subscribe"
                 aria-label="Search"
                 id="home-search-control"
                 onChange={(e) => setKeyword(e.target.value)}
