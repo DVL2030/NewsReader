@@ -1,24 +1,12 @@
 import { query } from "../db/db.js";
 
 export const getSub = async (userId) => {
-  const result = await query("SELECT feeds FROM subscription WHERE userid=$1", [
-    userId,
-  ]);
+  const result = await query(
+    "SELECT * FROM subscription s INNER JOIN feed f ON f.id = ANY(s.feeds) WHERE userid=$1",
+    [userId]
+  );
 
-  const feeds = result[0].feeds;
-  const collector = [];
-
-  if (feeds.length > 0) {
-    await Promise.all(
-      feeds.map(async (feed) => {
-        const data = await query("SELECT * FROM feed WHERE id=$1", [feed]);
-        if (data[0]) {
-          collector.push(data[0]);
-        }
-      })
-    );
-  }
-  return collector;
+  return result;
 };
 
 export const subscribe = async (userId, feed) => {

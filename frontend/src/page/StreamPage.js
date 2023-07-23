@@ -30,6 +30,7 @@ export default function StreamPage() {
   useEffect(() => {
     if (!subscription) dispatch(getSubscription());
     if (!stream) dispatch(streamFeed());
+    else if (!data) setData(stream);
   }, [data]);
 
   return loading ? (

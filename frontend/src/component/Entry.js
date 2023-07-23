@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { calcTimeDiff, extractURLParam, getIcon, parseDOM } from "../utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addToBookmark, removeFromBookmark } from "../slice/bookmarkSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,9 +10,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Entry(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { entry, bookmarked, feedly } = props;
 
-  const toastId = React.useRef(null);
+  const userState = useSelector((state) => state.user);
+  const { userInfo } = userState;
 
   const bookmarkState = useSelector((state) => state.bookmark);
   const { loadingAdd, loadingRemove, successAdd, successRemove, error } =
@@ -20,6 +22,7 @@ export default function Entry(props) {
 
   const bookmarkHandler = (e) => {
     e.preventDefault();
+    if (!userInfo) navigate(`/signin/?redirect=/entry/${entry.id}`);
 
     if (loadingAdd || loadingRemove) return;
     if (!bookmarked) {
@@ -27,19 +30,6 @@ export default function Entry(props) {
     } else {
       dispatch(removeFromBookmark(entry.id));
     }
-    toastId.current = toast.success("Added!", {
-      autoClose: 1000,
-    });
-
-    if (successAdd) {
-    } else if (successRemove) {
-      toastId.current = toast.success("Removed!", {
-        autoClose: 1000,
-      });
-    } else if (error)
-      toastId.current = toast.error(error, {
-        autoClose: 1000,
-      });
   };
 
   const updateDom = (id) => {

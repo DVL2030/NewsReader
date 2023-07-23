@@ -15,6 +15,7 @@ subRouter.post(
     const { userId } = req.body;
     try {
       const result = await getSub(userId);
+      console.log(result);
       return res.status(201).send(result);
     } catch (error) {
       return res.status(401).send({

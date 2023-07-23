@@ -19,7 +19,6 @@ bookmarkRouter.post(
         [userId]
       );
       if (result.length > 0) resData = result[0].entries;
-
       return res.status(201).send(resData);
     } catch (error) {
       return res.status(401).send({

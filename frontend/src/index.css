@@ -382,6 +382,9 @@ form.sign-in > div {
 div.sign-in {
   max-width: 23rem;
 }
+div.register {
+  max-width: 30rem;
+}
 
 form.sign-in > div {
   display: flex;

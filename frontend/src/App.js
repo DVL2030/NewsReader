@@ -18,6 +18,7 @@ import SubscriptionPage from "./page/SubscriptionPage";
 import PrivateRoute from "./component/PrivateRoute";
 import FeedSearchResultPage from "./page/FeedSearchResultPage";
 import BookmarkPage from "./page/BookmarkPage";
+import RegisterPage from "./page/RegisterPage";
 
 function App() {
   const navigate = useNavigate();
@@ -198,6 +199,7 @@ function App() {
           <Route path="/entry/:id" exact element={<EntryPage />} />
 
           <Route path="/signin" exact element={<SignInPage />}></Route>
+          <Route path="/register" exact element={<RegisterPage />}></Route>
           <Route path="/source/:source" exact element={<SourcePage />}></Route>
           <Route
             path="/user/stream"

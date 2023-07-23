@@ -16,8 +16,6 @@ export default function EntryPage() {
   const dispatch = useDispatch();
   const { id } = param;
 
-  const toastId = React.useRef(null);
-
   const newsState = useSelector((state) => state.news);
   const { newsEntry, loading, error } = newsState;
 
@@ -33,8 +31,9 @@ export default function EntryPage() {
 
   useEffect(() => {
     dispatch(getBookmark());
+
     dispatch(getEntry(id));
-  }, [successAdd, successRemove]);
+  }, [id, loadingAdd, loadingRemove]);
 
   return loading ? (
     <LoadingBox />
@@ -49,7 +48,7 @@ export default function EntryPage() {
           Successfully removed from your bookmark!
         </MessageBox>
       ) : (
-        <></>
+        error && <MessageBox variants="success">{error}</MessageBox>
       )}
 
       {newsEntry ? (

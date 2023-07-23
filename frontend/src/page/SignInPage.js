@@ -87,12 +87,7 @@ export default function SignInPage() {
                   </form>
 
                   <div className="text-center p-3">
-                    <div className="mb-2">
-                      <small className="text-secondary">Forgot password?</small>
-                      <Link className="d-inline-block ms-2" to="/register">
-                        Click here
-                      </Link>
-                    </div>
+                    <div className="mb-2"></div>
                     <div>
                       <small className="text-secondary">
                         Don’t have an account?
