@@ -77,7 +77,6 @@ userRouter.post(
       "SELECT COUNT(*) as count FROM users WHERE email = $1",
       [email]
     );
-    console.log(result);
     const count = result[0].count;
     if (count > 0) {
       return res.status(401).send({

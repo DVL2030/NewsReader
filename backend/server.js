@@ -1,6 +1,8 @@
+import http from "http";
 import express from "express";
 import dotenv from "dotenv";
 import cron from "node-cron";
+import path from "path";
 
 import newsRouter from "./routers/newsRouter.js";
 import userRouter from "./routers/userRouter.js";
@@ -16,7 +18,6 @@ const port = process.env.port || 5000;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.get("/", (req, res) => {});
 app.use("/api/users", userRouter);
 app.use("/api/news", newsRouter);
@@ -25,10 +26,22 @@ app.use("/api/feeds", feedsRouter);
 app.use("/api/bookmark", bookmarkRouter);
 app.use("/api/admin", adminRouter);
 
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
+);
+
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 
-app.listen(port, () => {
-  console.log(`serve at http://127.0.0.1:${port}`);
+const httpServer = http.Server(app);
+
+httpServer.listen(port, () => {
+  console.log(`Serve at http://localhost:${port}`);
 });
+
+// app.listen(port, () => {
+//   console.log(`serve at http://127.0.0.1:${port}`);
+// });
