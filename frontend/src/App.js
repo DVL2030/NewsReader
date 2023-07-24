@@ -23,7 +23,6 @@ import AdminRoute from "./component/AdminRoute";
 import AdminDashBoardPage from "./page/Admin/AdminDashboardPage";
 import AdminManageNewsPage from "./page/Admin/AdminManageNewsPage";
 import AdminManageUsersPage from "./page/Admin/AdminManageUsersPage";
-import RootPage from "./page/RootPage";
 
 function App() {
   const navigate = useNavigate();
