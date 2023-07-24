@@ -57,7 +57,6 @@ export const CHART_COLORS = {
 export const createChart = (el, type, data, options) => {};
 
 export const renderDashboard = () => {
-  // 대쉬보드 차트 설정
   const dashboard = document.getElementById("dashboard").getContext("2d");
   const chart_options = {
     responsive: true,

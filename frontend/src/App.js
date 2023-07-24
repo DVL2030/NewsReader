@@ -23,6 +23,7 @@ import AdminRoute from "./component/AdminRoute";
 import AdminDashBoardPage from "./page/Admin/AdminDashboardPage";
 import AdminManageNewsPage from "./page/Admin/AdminManageNewsPage";
 import AdminManageUsersPage from "./page/Admin/AdminManageUsersPage";
+import RootPage from "./page/RootPage";
 
 function App() {
   const navigate = useNavigate();
@@ -237,7 +238,7 @@ function App() {
       </header>
       <main id="main-div">
         <Routes>
-          <Route path="/" exact element={<HomePage />} />
+          <Route path="/" exact element={<RootPage />} />
           <Route path="/home" exact element={<HomePage />} />
           <Route path="/topics/:topic" exact element={<TopicPage />} />
           <Route path="/entry/:id" exact element={<EntryPage />} />
