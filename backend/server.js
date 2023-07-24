@@ -29,9 +29,12 @@ app.use("/api/feeds", feedsRouter);
 app.use("/api/bookmark", bookmarkRouter);
 app.use("/api/admin", adminRouter);
 
-const buildPath = path.join(__dirname, "/frontend/build");
+const buildPath = path.join(__dirname, "frontend/build");
 
 app.use(express.static(buildPath));
+app.get("/", function (req, res) {
+  res.sendFile(path.join(buildPath, "index.html"));
+});
 app.get("*", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"));
 });
@@ -47,5 +50,5 @@ app.use((err, req, res, next) => {
 // });
 
 app.listen(port, () => {
-  console.log(`serve at http://127.0.0.1:${port}`);
+  console.log(`serve at http://localhost:${port}`);
 });
