@@ -43,10 +43,6 @@ function App() {
     dispatch(signout());
   };
 
-  useEffect(() => {
-    Navigate("/home");
-  }, []);
-
   return loading ? (
     <LoadingBox className="m-5" />
   ) : (

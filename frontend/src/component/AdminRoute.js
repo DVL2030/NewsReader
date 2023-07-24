@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
 import SorryBox from "./SorryBox";
 
 export default function AdminRoute(props) {

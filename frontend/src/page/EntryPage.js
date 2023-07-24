@@ -8,8 +8,8 @@ import Entry from "../component/Entry";
 import { getEntry } from "../slice/newsSlice";
 import { getBookmark } from "../slice/bookmarkSlice";
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { toast, ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 export default function EntryPage() {
   const param = useParams();

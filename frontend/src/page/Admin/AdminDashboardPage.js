@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDashboardOverview } from "../../slice/adminSlice";
-import { Link } from "react-router-dom";
-// import { Chart } from "react-google-charts";
 import StatCard from "../../component/StatCard";
 import { Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "../../component/LoadingBox";
