@@ -11,6 +11,7 @@ import subRouter from "./routers/subRouter.js";
 import feedsRouter from "./routers/feedsRouter.js";
 import bookmarkRouter from "./routers/bookmarkRouter.js";
 import adminRouter from "./routers/adminRouter.js";
+import { getClient } from "./db/db.js";
 
 dotenv.config();
 

@@ -1,16 +1,18 @@
-const env = process.env;
+import dotenv from "dotenv";
+dotenv.config();
 
 const config = {
   db: {
-    host: env.DB_HOST || "localhost",
-    port: env.DB_PORT || "5432",
-    user: env.DB_USER || "postgres",
-    password: env.DB_PASSWORD || "admin",
-    database: env.DB_NAME || "news",
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    ssl: true,
     max: 20,
     idleTimeoutMillis: 1000,
   },
-  listPerPage: env.LIST_PER_PAGE || 20,
+  listPerPage: process.env.LIST_PER_PAGE || 20,
 };
 
 export default config;
