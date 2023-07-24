@@ -2,7 +2,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Nav, Navbar, Container, Form, Button } from "react-bootstrap";
 import HomePage from "./page/HomePage";
@@ -23,6 +23,7 @@ import AdminRoute from "./component/AdminRoute";
 import AdminDashBoardPage from "./page/Admin/AdminDashboardPage";
 import AdminManageNewsPage from "./page/Admin/AdminManageNewsPage";
 import AdminManageUsersPage from "./page/Admin/AdminManageUsersPage";
+import RootPage from "./page/RootPage";
 
 function App() {
   const navigate = useNavigate();
@@ -42,6 +43,10 @@ function App() {
   const signOutHandler = () => {
     dispatch(signout());
   };
+
+  useEffect(() => {
+    Navigate("/home");
+  }, []);
 
   return loading ? (
     <LoadingBox className="m-5" />

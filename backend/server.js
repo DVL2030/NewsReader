@@ -13,7 +13,7 @@ import adminRouter from "./routers/adminRouter.js";
 
 dotenv.config();
 
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
 const app = express();
@@ -21,7 +21,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {});
 app.use("/api/users", userRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/subscription", subRouter);
@@ -32,11 +31,19 @@ app.use("/api/admin", adminRouter);
 const buildPath = path.join(__dirname, "frontend/build");
 
 app.use(express.static(buildPath));
-app.get("/", function (req, res) {
-  res.sendFile(path.join(buildPath, "index.html"));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(buildPath, "index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
 });
 app.get("*", (req, res) => {
-  res.sendFile(path.join(buildPath, "index.html"));
+  res.sendFile(path.join(buildPath, "index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
 });
 
 app.use((err, req, res, next) => {
