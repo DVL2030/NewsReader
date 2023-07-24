@@ -31,10 +31,6 @@ app.use("/api/admin", adminRouter);
 
 const buildPath = path.join(__dirname, "/frontend/build");
 
-app.get("/", function (req, res) {
-  res.sendFile(path.join(buildPath, "index.html"));
-});
-
 app.use(express.static(buildPath));
 app.get("*", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"));
@@ -44,12 +40,12 @@ app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 
-const httpServer = http.Server(app);
+// const httpServer = http.Server(app);
 
-httpServer.listen(port, () => {
-  console.log(`Serve at http://localhost:${port}`);
-});
-
-// app.listen(port, () => {
-//   console.log(`serve at http://127.0.0.1:${port}`);
+// httpServer.listen(port, () => {
+//   console.log(`Serve at http://localhost:${port}`);
 // });
+
+app.listen(port, () => {
+  console.log(`serve at http://127.0.0.1:${port}`);
+});
