@@ -5,6 +5,7 @@ import subSlice from "./slice/subSlice";
 import feedSlice from "./slice/feedSlice";
 import bookmarkSlice from "./slice/bookmarkSlice";
 import adminSlice from "./slice/adminSlice";
+import gptSlice from "./slice/gptSlice";
 
 const initialState = {
   user: {
@@ -28,6 +29,7 @@ export const store = configureStore({
     sub: subSlice,
     bookmark: bookmarkSlice,
     admin: adminSlice,
+    gpt: gptSlice,
   },
   preloadedState: initialState,
 });

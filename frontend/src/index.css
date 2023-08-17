@@ -126,6 +126,41 @@ button.search {
   padding-top: 10rem;
 }
 
+/* ==========================================
+   Chat
+   ==========================================*/
+
+#main-chat-container {
+  position: fixed;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity 600ms, visibility 600ms;
+  transition: opacity 600ms, visibility 600ms;
+  bottom: 4rem;
+  right: 2rem;
+  height: 500px;
+  width: 450px;
+  /* overflow-y: scroll; */
+}
+
+#chat-gpt {
+  position: fixed;
+  bottom: 1rem;
+  right: 2rem;
+  z-index: 40;
+  /* right: 1rem; */
+}
+
+.show {
+  display: block;
+}
+
+.btn.chat-gpt-toggle-btn {
+  font-weight: bold;
+  width: max-content;
+  color: floralwhite;
+}
+
 /* ==========================================================================
    HTML Elements
    ========================================================================== */
@@ -466,6 +501,10 @@ div.container {
   .crd h5,
   .crd span {
     font-size: 0.6rem;
+  }
+  #main-chat-container {
+    width: 80%;
+    height: 60%;
   }
 }
 

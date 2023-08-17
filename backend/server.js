@@ -12,6 +12,7 @@ import feedsRouter from "./routers/feedsRouter.js";
 import bookmarkRouter from "./routers/bookmarkRouter.js";
 import adminRouter from "./routers/adminRouter.js";
 import { getClient } from "./db/db.js";
+import gptRouter from "./routers/chatGptRouter.js";
 
 dotenv.config();
 
@@ -29,24 +30,19 @@ app.use("/api/subscription", subRouter);
 app.use("/api/feeds", feedsRouter);
 app.use("/api/bookmark", bookmarkRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/chatGpt", gptRouter);
 
 const buildPath = path.join(__dirname, "frontend/build");
 
-app.use(express.static(buildPath));
-// app.get("/", (req, res) => {
+// app.use(express.static(buildPath));
+
+// app.get("*", (req, res) => {
 //   res.sendFile(path.join(buildPath, "index.html"), function (err) {
 //     if (err) {
 //       res.status(500).send(err);
 //     }
 //   });
 // });
-app.get("*", (req, res) => {
-  res.sendFile(path.join(buildPath, "index.html"), function (err) {
-    if (err) {
-      res.status(500).send(err);
-    }
-  });
-});
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

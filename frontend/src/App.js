@@ -1,8 +1,9 @@
 import "./App.css";
+import gptAvatar from "./ChatGPT_logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { createElement, useEffect, useState } from "react";
 
 import { Nav, Navbar, Container, Form, Button } from "react-bootstrap";
 import HomePage from "./page/HomePage";
@@ -23,14 +24,37 @@ import AdminRoute from "./component/AdminRoute";
 import AdminDashBoardPage from "./page/Admin/AdminDashboardPage";
 import AdminManageNewsPage from "./page/Admin/AdminManageNewsPage";
 import AdminManageUsersPage from "./page/Admin/AdminManageUsersPage";
+import { askGPT } from "./slice/gptSlice";
+
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  Message,
+  MessageInput,
+  TypingIndicator,
+} from "@chatscope/chat-ui-kit-react";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useState("");
+  const [show, setShow] = useState(false);
+
+  const [message, setMessage] = useState(" ");
+  const [chats, setChats] = useState([
+    {
+      message: "Hello, ask me anything",
+      sender: "ChatGPT",
+    },
+  ]);
 
   const userState = useSelector((state) => state.user);
   const { userInfo, loading, error } = userState;
+
+  const gptState = useSelector((state) => state.gpt);
+  const { resMsg, loading: gptLoading, error: gptError } = gptState;
 
   const searchHandler = () => {
     navigate(`/feed/search/${keyword}`);
@@ -42,6 +66,37 @@ function App() {
   const signOutHandler = () => {
     dispatch(signout());
   };
+
+  const handleShow = () => {
+    let el = document.getElementById("main-chat-container");
+    if (show) {
+      el.style.visibility = "hidden";
+      el.style.opacity = "0";
+    } else {
+      el.style.visibility = "visible";
+      el.style.opacity = "1";
+    }
+    console.log(el.style.visibility);
+    setShow(!show);
+  };
+
+  const sendMsg = () => {
+    const newMsg = {
+      message: message,
+      sender: "user",
+      direction: "outgoing",
+    };
+    const newChats = [...chats, newMsg];
+    setChats(newChats);
+    dispatch(askGPT(newChats));
+    setMessage("");
+  };
+
+  useEffect(() => {
+    if (resMsg) {
+      setChats([...chats, { message: resMsg, sender: "ChatGPT" }]);
+    }
+  }, [resMsg]);
 
   return loading ? (
     <LoadingBox className="m-5" />
@@ -234,6 +289,51 @@ function App() {
             </Nav>
           </Container>
         </Navbar>
+        <MainContainer id="main-chat-container">
+          <ChatContainer>
+            <MessageList
+              style={{ padding: 8 }}
+              typingIndicator={
+                gptLoading ? (
+                  <TypingIndicator
+                    style={{ margin: 4, opacity: 0.5 }}
+                    content="ChatGPT is typing"
+                  />
+                ) : null
+              }
+            >
+              {chats.map((chat, i) => {
+                return (
+                  <Message key={i} model={chat} style={{ marginBlock: 8 }} />
+                );
+              })}
+            </MessageList>
+            <MessageInput
+              id="message-input"
+              type="text"
+              value={message}
+              placeholder="Type your message"
+              onChange={(v) => setMessage(v)}
+              onSend={() => sendMsg()}
+              disabled={gptLoading}
+            />
+          </ChatContainer>
+        </MainContainer>
+        <div id="chat-gpt">
+          <div>
+            <Button
+              onClick={() => handleShow()}
+              className="chat-gpt-toggle-btn"
+            >
+              <span>
+                <i className="fa-regular fa-comments fa-xl"></i>
+              </span>
+              <div className="d-inline-block mx-3">
+                <span>Chat</span>
+              </div>
+            </Button>
+          </div>
+        </div>
       </header>
       <main id="main-div">
         <Routes>
