@@ -11,7 +11,6 @@ import subRouter from "./routers/subRouter.js";
 import feedsRouter from "./routers/feedsRouter.js";
 import bookmarkRouter from "./routers/bookmarkRouter.js";
 import adminRouter from "./routers/adminRouter.js";
-import { getClient } from "./db/db.js";
 import gptRouter from "./routers/chatGptRouter.js";
 
 dotenv.config();
@@ -34,26 +33,26 @@ app.use("/api/chatGpt", gptRouter);
 
 const buildPath = path.join(__dirname, "frontend/build");
 
-// app.use(express.static(buildPath));
+app.use(express.static(buildPath));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(buildPath, "index.html"), function (err) {
-//     if (err) {
-//       res.status(500).send(err);
-//     }
-//   });
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(buildPath, "index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 
-// const httpServer = http.Server(app);
+const httpServer = http.Server(app);
 
-// httpServer.listen(port, () => {
-//   console.log(`Serve at http://localhost:${port}`);
-// });
-
-app.listen(port, () => {
-  console.log(`serve at http://localhost:${port}`);
+httpServer.listen(port, () => {
+  console.log(`Serve at http://localhost:${port}`);
 });
+
+// app.listen(port, () => {
+//   console.log(`serve at http://localhost:${port}`);
+// });
